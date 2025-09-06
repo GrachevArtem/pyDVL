@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from typing import Sequence
 
 import numpy as np
@@ -12,7 +14,7 @@ from pydvl.valuation.utility.base import UtilityBase
 from pydvl.valuation.utility.learning import IndicatorUtilityModel
 
 
-class LinearUtility(UtilityBase):
+class LinearUtility(UtilityBase[Sample]):
     """A utility function that returns the sum of the weights corresponding to the
     indices in the subset.
 
@@ -25,9 +27,9 @@ class LinearUtility(UtilityBase):
         self.weights = np.array(weights)
 
         # FIXME this doesn't make sense
-        self._training_data = training_data
+        self._training_data = training_data  # type: ignore
 
-    def __call__(self, sample: Sample):
+    def __call__(self, sample: Sample | None) -> float:
         # Compute the sum of the weights corresponding to the indices in the subset.
         if sample is None or len(sample.subset) == 0:
             return 0.0
@@ -133,6 +135,9 @@ class FakePredictor(SupervisedModel):
     def predict(self, X):
         self.last_predict_X = X
         return np.sum(X, axis=1, keepdims=True)
+
+    def score(self, x: NDArray, y: NDArray | None) -> float:
+        return 1.0  # dummy, not used in tests
 
 
 @pytest.mark.parametrize(

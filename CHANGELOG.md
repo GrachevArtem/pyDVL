@@ -2,13 +2,38 @@
 
 ## Unreleased
 
+### Added
+
+- Support for `torch.Tensor` as underlying data type in `Dataset` and
+  `GroupedDataset`
+  [PR #673](https://github.com/aai-institute/pyDVL/pull/673)
+- Support for pytorch models in most valuation methods when wrapped in
+  classes implementing the protocol `TorchSupervisedModel`, e.g. by using
+  [skorch.NeuralNetClassifier](https://skorch.readthedocs.io/en/stable/classifier.html)
+  models
+  [PR #673](https://github.com/aai-institute/pyDVL/pull/673)
+
+### Fixed
+
+- Issues with `Dataset` indexing
+  [PR #673](https://github.com/aai-institute/pyDVL/pull/673)
+
+### Changed
+
+
+## v0.10.0 - 💥📚🐞🆕 New valuation interface, improved docs, new methods, breaking changes and tons of improvements
+
 
 ### Added
 
+- Simple result serialization to resume computation of values
+  [PR #666](https://github.com/aai-institute/pyDVL/pull/666)
 - Simple memory monitor / reporting
   [PR #663](https://github.com/aai-institute/pyDVL/pull/663)
 - New stopping criterion `MaxSamples`
   [PR #661](https://github.com/aai-institute/pyDVL/pull/661)
+- New pseudo-stopping criterion `History` to record value updates during fitting
+  [PR #653](https://github.com/aai-institute/pyDVL/pull/653)
 - Introduced `UtilityModel` and two implementations `IndicatorUtilityModel`
   and `DeepSetsUtilityModel` for data utility learning
   [PR #650](https://github.com/aai-institute/pyDVL/pull/650)
@@ -29,6 +54,7 @@
 - Refactor MSR Banzhaf semivalues with the new sampler architecture.
   [PR #605](https://github.com/aai-institute/pyDVL/pull/605)
   [PR #641](https://github.com/aai-institute/pyDVL/pull/641)
+  [PR #653](https://github.com/aai-institute/pyDVL/pull/653)
 - Refactor group-testing shapley values with new sampler architecture
   [PR #602](https://github.com/aai-institute/pyDVL/pull/602)
 - Refactor least-core data valuation methods with more supported sampling
@@ -89,9 +115,13 @@
 
 ### Changed
 
+- Major rewrite of the documentation for the new interface in 0.10.0
+  [PR #653](https://github.com/aai-institute/pyDVL/pull/653)
 - Slicing, comparing and setting of `ValuationResult` behave in a more 
-  natural way
-  [PR #660](https://github.com/aai-institute/pyDVL/pull/660)
+  natural and consistent way. Several bug fixes.
+  [PR #653](https://github.com/aai-institute/pyDVL/pull/653)
+  [PR #660](https://github.com/aai-institute/pyDVL/pull/660) 
+  [PR #666](https://github.com/aai-institute/pyDVL/pull/666)
 - Switched all semi-value coefficients and sampler weights to log-space in
   order to avoid overflows
   [PR #643](https://github.com/aai-institute/pyDVL/pull/643)
@@ -160,6 +190,8 @@
     - renaming `PreConditioner` -> `Preconditioner`
     - fit to `TensorOperator`
     [PR #601](https://github.com/aai-institute/pyDVL/pull/601)
+  - Bumped `zarr` dependency to v3
+    [PR #668](https://github.com/aai-institute/pyDVL/pull/668) 
   
   
 ## 0.9.2 - 🏗  Bug fixes, logging improvement

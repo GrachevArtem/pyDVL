@@ -213,7 +213,7 @@ def stratified_samplers(n_samples_per_index: int = 32):
         FiniteSequentialIndexIteration,
     ]
 
-    ret = []
+    ret: list[tuple[type[IndexSampler], dict]] = []
     for ss in sample_size_strategies:
         ret.append(
             (
@@ -630,7 +630,7 @@ def _create_seeded_sample_iter(
     return sample_stream
 
 
-@pytest.mark.flaky(reruns=1)
+@pytest.mark.flaky(reruns=2)
 @pytest.mark.parametrize(
     "sampler_cls, sampler_kwargs", deterministic_samplers() + random_samplers()
 )
@@ -741,14 +741,16 @@ class TestBatchSampler(IndexSampler):
     def __init__(self, batch_size):
         super().__init__(batch_size)
 
-    def sample_limit(self, indices: IndexSetT) -> int | None: ...
+    def sample_limit(self, indices: IndexSetT) -> int | None:
+        return len(indices)
 
     def generate(self, indices: IndexSetT) -> SampleGenerator:
         yield from (Sample(idx, np.empty_like(indices)) for idx in indices)
 
-    def log_weight(self, n: int, subset_len: int) -> float: ...
+    def log_weight(self, n: int, subset_len: int) -> float:
+        return 0.0
 
-    def make_strategy(
+    def make_strategy(  # type: ignore[empty-body]
         self,
         utility: UtilityBase,
         log_coefficient: Callable[[int, int], float] | None = None,
