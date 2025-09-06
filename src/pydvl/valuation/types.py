@@ -15,7 +15,6 @@ from typing import (
     Any,
     Callable,
     Generator,
-    Iterable,
     Protocol,
     Type,
     TypeVar,
@@ -243,7 +242,7 @@ class ClasswiseSample(Sample):
 
 SampleT = TypeVar("SampleT", bound=Sample)
 
-SampleBatch = Iterable[SampleT]
+SampleBatch = list[SampleT]
 SampleGenerator = Generator[SampleT, None, None]
 BatchGenerator = Generator[SampleBatch[SampleT], None, None]
 
