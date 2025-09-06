@@ -69,7 +69,6 @@ __all__ = [
     "atleast1d",
     "check_X_y",
     "check_X_y_torch",
-    "require_torch",
     "try_torch_import",
 ]
 
@@ -99,12 +98,6 @@ if TYPE_CHECKING:
 else:
     # At runtime this is just a reference to the actual class
     Tensor = Any if torch is None else torch.Tensor
-
-
-def require_torch() -> ModuleType:
-    torch = try_torch_import(require=True)
-    assert torch is not None
-    return torch
 
 
 def is_tensor(array: Any) -> bool:
@@ -190,7 +183,8 @@ def to_tensor(array: Array | ArrayLike) -> Tensor:
     Raises:
         ImportError: If PyTorch is not available.
     """
-    torch = require_torch()
+    assert torch is not None
+
     if isinstance(array, torch.Tensor):
         return array
     return cast(Tensor, torch.as_tensor(array))
@@ -520,7 +514,7 @@ def check_X_y_torch(
     Raises:
         ValueError or TypeError if the inputs are invalid.
     """
-    torch = require_torch()
+    assert torch is not None
 
     estimator_name = (
         estimator.__class__.__name__
