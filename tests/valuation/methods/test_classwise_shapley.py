@@ -19,6 +19,7 @@ The details of the derivation are left to the eager reader.
 from __future__ import annotations
 
 import logging
+from typing import cast
 
 import numpy as np
 import pytest
@@ -111,7 +112,7 @@ class ClosedFormLinearClassifier:
             raise AttributeError("Model not fitted")
 
         probs = self._beta * x
-        return np.clip(np.round(probs + 1e-10), 0, 1).astype(int)
+        return cast(NDArray, np.clip(np.round(probs + 1e-10), 0, 1).astype(int))
 
     def score(self, x: NDArray, y: NDArray | None) -> float:
         assert y is not None
@@ -154,10 +155,7 @@ def test_dataset_manual_derivation(train_dataset_manual_derivation) -> Dataset:
 @pytest.mark.parametrize("n_samples", [100], ids=lambda x: f"n_samples={x}")
 @pytest.mark.parametrize(
     "exact_solution",
-    [
-        pytest.param("classwise_shapley_exact_solution", marks=[pytest.mark.xfail]),
-        "classwise_shapley_exact_solution_normalized",
-    ],
+    ["classwise_shapley_exact_solution", "classwise_shapley_exact_solution_normalized"],
 )
 def test_classwise_shapley(
     classwise_shapley_utility: ClasswiseModelUtility,
@@ -167,9 +165,7 @@ def test_classwise_shapley(
     batch_size: int,
     request,
 ):
-    method_kwargs, exact_solution, check_kwargs = request.getfixturevalue(
-        exact_solution
-    )
+    method_kwargs, exact_result, check_kwargs = request.getfixturevalue(exact_solution)
     in_class_sampler = DeterministicPermutationSampler()
     out_of_class_sampler = DeterministicUniformSampler(
         index_iteration=FiniteNoIndexIteration
@@ -187,4 +183,4 @@ def test_classwise_shapley(
         **method_kwargs,
     )
     valuation.fit(train_dataset_manual_derivation)
-    check_values(valuation.result, exact_solution, **check_kwargs)
+    check_values(valuation.result, exact_result, **check_kwargs)

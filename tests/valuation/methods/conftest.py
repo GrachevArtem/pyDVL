@@ -1,18 +1,22 @@
 from __future__ import annotations
 
+from typing import TYPE_CHECKING
+
 import pytest
+from numpy.typing import NDArray
 from typing_extensions import Self
 
 from pydvl.utils import Seed, try_torch_import
 from pydvl.valuation.dataset import Dataset
-from pydvl.valuation.games import DummyGameDataset, MinerGame, ShoesGame
+from pydvl.valuation.games import MinerGame, ShoesGame
 from pydvl.valuation.scorers import ClasswiseSupervisedScorer
 from pydvl.valuation.utility.classwise import ClasswiseModelUtility
 
-torch = try_torch_import()
-
-if torch is None:
-    pytest.skip("PyTorch not available", allow_module_level=True)
+if TYPE_CHECKING:
+    import torch
+else:
+    if (torch := try_torch_import()) is None:
+        pytest.skip("PyTorch not available", allow_module_level=True)
 
 
 class TorchLinearClassifier:
@@ -48,8 +52,8 @@ class TorchBaggingClassifier:
         self.n_estimators = n_estimators
         self.max_samples = max_samples
         self.random_state = random_state
-        self.estimators_ = []
-        self.estimators_samples_ = []
+        self.estimators_: list[TorchLinearClassifier] = []
+        self.estimators_samples_: list[NDArray] = []
 
     def fit(self, X, y):
         n_samples = X.shape[0]
@@ -129,21 +133,18 @@ def tensor_classwise_utility(tensor_test_dataset):
     )
 
 
-class TensorDummyGameDataset(DummyGameDataset):
+class TensorDummyGameDataset(Dataset[torch.Tensor]):
     """Extends DummyGameDataset to use PyTorch tensors instead of NumPy arrays."""
 
     def __init__(self, n_players: int, description: str = ""):
         x = torch.arange(0, n_players, 1).reshape(-1, 1).float()
         nil = torch.zeros_like(x)
-        (
-            Dataset.__init__(
-                self,
-                x,
-                nil.clone(),
-                feature_names=["x"],
-                target_names=["y"],
-                description=description,
-            ),
+        super().__init__(
+            x,
+            nil.clone(),
+            feature_names=["x"],
+            target_names=["y"],
+            description=description,
         )
 
 
@@ -152,7 +153,7 @@ class TensorMinerGame(MinerGame):
 
     def __init__(self, n_players: int):
         super().__init__(n_players)
-        self.data = TensorDummyGameDataset(self.n_players, "Tensor Miner Game dataset")
+        self.data = TensorDummyGameDataset(self.n_players, "Tensor Miner Game dataset")  # type: ignore[assignment]
 
 
 class TensorShoesGame(ShoesGame):
@@ -160,4 +161,4 @@ class TensorShoesGame(ShoesGame):
 
     def __init__(self, left: int, right: int):
         super().__init__(left, right)
-        self.data = TensorDummyGameDataset(self.n_players, "Tensor Shoes Game dataset")
+        self.data = TensorDummyGameDataset(self.n_players, "Tensor Shoes Game dataset")  # type: ignore[assignment]

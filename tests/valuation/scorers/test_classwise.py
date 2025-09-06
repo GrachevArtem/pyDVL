@@ -60,7 +60,7 @@ def model() -> SupervisedModel:
 def test_classwise_scorer(
     model: SupervisedModel, test_data: Dataset, expected_scores: dict[int, float]
 ):
-    scorer = ClasswiseSupervisedScorer("accuracy", test_data)
+    scorer = ClasswiseSupervisedScorer[SupervisedModel, NDArray]("accuracy", test_data)
 
     for label, expected_score in expected_scores.items():
         scorer.label = label

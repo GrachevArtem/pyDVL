@@ -12,9 +12,9 @@ from sklearn.preprocessing import PolynomialFeatures
 from sklearn.utils import Bunch
 
 from pydvl.parallel import JoblibParallelBackend
-from pydvl.utils import SupervisedModel
 from pydvl.utils.caching import InMemoryCacheBackend
 from pydvl.utils.status import Status
+from pydvl.utils.types import SupervisedModel
 from pydvl.valuation.dataset import Dataset
 from pydvl.valuation.games import (
     AsymmetricVotingGame,
@@ -59,8 +59,8 @@ def polynomial_dataset(coefficients: np.ndarray):
     y = np.random.normal(loc=locs, scale=0.3)
     db = Bunch()
     db.data, db.target = x.reshape(-1, 1), y
-    poly = [f"{c} x^{i}" for i, c in enumerate(coefficients)]
-    poly = " + ".join(poly)
+    monomials = [f"{c} x^{i}" for i, c in enumerate(coefficients)]
+    poly = " + ".join(monomials)
     db.DESCR = f"$y \\sim N({poly}, 1)$"
     db.feature_names = ["x"]
     db.target_names = ["y"]
@@ -135,7 +135,7 @@ def dummy_utility(dummy_train_data, dummy_test_data) -> ModelUtility:
     model = DummyModel(data)
 
     x, _ = data.data()
-    scorer = SupervisedScorer(
+    scorer = SupervisedScorer[SupervisedModel, NDArray](
         model, test_data=test_data, default=0, range=(0, x.sum() / x.max())
     )
 
@@ -211,7 +211,9 @@ def linear_shapley(
     train, test = linear_dataset
     if utility is None:
         scorer = compose_score(
-            SupervisedScorer("r2", test, default=-np.inf), sigmoid, name=scorer_name
+            SupervisedScorer[SupervisedModel, NDArray]("r2", test, default=-np.inf),
+            sigmoid,
+            name=scorer_name,
         )
         utility = ModelUtility(LinearRegression(), scorer=scorer).with_dataset(train)
     if exact_result is None:

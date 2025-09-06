@@ -1,3 +1,6 @@
+from types import ModuleType
+from typing import TYPE_CHECKING
+
 import numpy as np
 import pytest
 from sklearn.datasets import make_classification
@@ -5,7 +8,11 @@ from sklearn.datasets import make_classification
 from pydvl.utils.array import is_numpy, try_torch_import
 from pydvl.valuation.dataset import Dataset, GroupedDataset, RawData
 
-torch = try_torch_import()
+if TYPE_CHECKING:
+    import torch
+else:
+    torch = try_torch_import()
+
 pytestmark = pytest.mark.skipif(torch is None, reason="PyTorch not installed")
 
 

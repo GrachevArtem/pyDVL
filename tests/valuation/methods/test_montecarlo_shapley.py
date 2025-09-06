@@ -4,6 +4,7 @@ from typing import Any, Type
 import numpy as np
 import pytest
 from joblib import parallel_config
+from numpy.typing import NDArray
 from sklearn.linear_model import LinearRegression
 
 from pydvl.utils import SupervisedModel
@@ -379,7 +380,7 @@ def test_grouped_linear_montecarlo_shapley(
     data_train, data_test = linear_dataset
 
     scorer = compose_score(
-        SupervisedScorer("r2", data_test, default=-np.inf),
+        SupervisedScorer[SupervisedModel, NDArray]("r2", data_test, default=-np.inf),
         sigmoid,
         name="squashed r2",
     )
