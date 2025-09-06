@@ -37,7 +37,7 @@ def compose_score(
         The composite [SupervisedScorer][pydvl.valuation.scorers.SupervisedScorer].
     """
 
-    class CompositeSupervisedScorer(SupervisedScorer[SupervisedModelT, ArrayT]):
+    class CompositeSupervisedScorer(SupervisedScorer):
         def __call__(self, model: SupervisedModelT) -> float:
             raw = super().__call__(model)
             return transformation(raw)
