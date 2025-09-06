@@ -186,7 +186,7 @@ def to_tensor(array: Array | ArrayLike) -> Tensor:
     assert torch is not None
 
     if isinstance(array, torch.Tensor):
-        return array
+        return cast(Tensor, array)
     return cast(Tensor, torch.as_tensor(array))
 
 
@@ -473,7 +473,7 @@ def check_X_y(
     if is_tensor(X) and is_tensor(y):
         assert torch is not None
         return cast(
-            Tuple[Array, Array],
+            tuple[Tensor, Tensor],
             check_X_y_torch(
                 cast(Tensor, X),
                 cast(Tensor, y),
@@ -483,7 +483,7 @@ def check_X_y(
             ),
         )
     return cast(
-        Tuple[Array, Array],
+        Tuple[NDArray, NDArray],
         sklearn.utils.check_X_y(
             X, y, multi_output=multi_output, estimator=estimator, copy=copy
         ),
