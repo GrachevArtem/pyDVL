@@ -99,7 +99,8 @@ class ClasswiseSupervisedScorer(SupervisedScorer[SupervisedModelT, ArrayT]):
         disc_score_out_of_class = out_of_class_discount_fn(range[1])
         transformed_range = (0, disc_score_in_class * disc_score_out_of_class)
         super().__init__(
-            scoring=scoring,
+            # FIXME: no idea why this makes mypy unhappy
+            scoring=scoring,  # type: ignore[arg-type]
             test_data=test_data,
             range=transformed_range,
             default=default,

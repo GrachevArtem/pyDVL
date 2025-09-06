@@ -102,7 +102,7 @@ from dataclasses import dataclass
 from numbers import Integral
 from pathlib import Path
 from tempfile import mkdtemp
-from typing import Any, Generic, Sequence, cast, overload
+from typing import TYPE_CHECKING, Any, Generic, Sequence, cast, overload
 
 import numpy as np
 from deprecate import deprecated
@@ -113,7 +113,6 @@ from sklearn.utils import Bunch
 __all__ = ["Dataset", "GroupedDataset", "RawData"]
 
 from pydvl.utils.array import (
-    Array,
     ArrayT,
     atleast1d,
     check_X_y,
@@ -126,9 +125,10 @@ from pydvl.utils.array import (
 
 logger = logging.getLogger(__name__)
 
-# Import torch if available for typing
-torch = try_torch_import()
-Tensor = None if torch is None else torch.Tensor
+if TYPE_CHECKING:
+    import torch
+else:
+    torch = try_torch_import()
 
 
 @dataclass(frozen=True)
@@ -302,8 +302,10 @@ class Dataset(Generic[ArrayT]):
                     "Make sure that the data has the proper shape before "
                     "constructing a Dataset"
                 )
-                _x, _y = x, y
+                _x: NDArray | np.memmap = x
+                _y: NDArray | np.memmap = y
             else:
+                assert isinstance(x, np.ndarray) and isinstance(y, np.ndarray)
                 _x, _y = check_X_y(x, y, multi_output=multi_output, estimator="Dataset")
 
             self._x = cast(ArrayT, _maybe_create_memmap(_x))
@@ -314,10 +316,10 @@ class Dataset(Generic[ArrayT]):
             )
 
         # These are for __setstate__
-        self._x_dtype, self._y_dtype = self._x.dtype, self._y.dtype
-        self._x_shape, self._y_shape = self._x.shape, self._y.shape
+        self._x_dtype, self._y_dtype = self._x.dtype, self._y.dtype  # type: ignore
+        self._x_shape, self._y_shape = self._x.shape, self._y.shape  # type: ignore
 
-        def make_names(s: str, a: Array) -> NDArray[np.str_]:
+        def make_names(s: str, a: ArrayT) -> NDArray[np.str_]:
             n = a.shape[1] if len(a.shape) > 1 else 1
             return np.array(
                 [f"{s}{i:0{1 + int(math.log10(n))}d}" for i in range(1, n + 1)],
@@ -480,7 +482,7 @@ class Dataset(Generic[ArrayT]):
             ValueError: If the target name is not found.
         """
         try:
-            target_idx = np.where(self.target_names == name)[0][0]
+            target_idx = np.where(self.target_names == name)[0][0].item()
             if self.n_targets == 1:
                 return slice(None)
             else:
@@ -742,8 +744,8 @@ class GroupedDataset(Dataset[ArrayT]):
             Added support for PyTorch tensors.
         """
         super().__init__(
-            x=x,
-            y=y,
+            x=x,  # type: ignore
+            y=y,  # type: ignore
             feature_names=feature_names,
             target_names=target_names,
             data_names=data_names,
@@ -788,7 +790,7 @@ class GroupedDataset(Dataset[ArrayT]):
 
     def __getitem__(
         self, idx: int | slice | Sequence[int] | NDArray[np.int_] | None = None
-    ) -> GroupedDataset:
+    ) -> GroupedDataset[ArrayT]:
         if idx is None:
             idx = slice(None)
         elif isinstance(idx, int):
@@ -818,7 +820,7 @@ class GroupedDataset(Dataset[ArrayT]):
 
     def data(
         self, indices: int | slice | Sequence[int] | NDArray[np.int_] | None = None
-    ) -> RawData:
+    ) -> RawData[ArrayT]:
         """Returns the data and labels of all samples in the given groups.
 
         Args:
