@@ -255,12 +255,16 @@ class ClasswiseSampler(IndexSampler[ClasswiseSample, ValueUpdate]):
                 break
 
     def generate_batches(self, indices: IndexSetT) -> BatchGenerator:
-        raise AttributeError("Cannot sample from indices directly. Call `from_data()`.")
+        raise AttributeError(
+            "Cannot sample from indices directly. Call `batches_from_data()`."
+        )
 
     def generate(self, indices: IndexSetT) -> SampleGenerator:
         """This is not needed because this sampler is used by calling the `from_data`
         method instead of the `generate_batches` method."""
-        raise AttributeError("Cannot sample from indices directly.")
+        raise AttributeError(
+            "Cannot sample from indices directly. Call `samples_from_data()`."
+        )
 
     def log_weight(self, n: int, subset_len: int) -> float:
         """CW-Shapley uses the evaluation strategy from the in-class sampler, so this
