@@ -46,12 +46,13 @@ This sampling scheme is divided into an outer and an inner sampler.
 from __future__ import annotations
 
 from itertools import cycle, islice
-from typing import Generator, Iterable, Mapping, TypeVar, cast
+from typing import TYPE_CHECKING, Generator, Iterable, Mapping, TypeVar, overload
 
 import numpy as np
 from more_itertools import chunked, flatten
+from numpy.typing import NDArray
 
-from pydvl.utils.array import DT, Array, array_unique, is_categorical
+from pydvl.utils.array import array_unique, is_categorical
 from pydvl.valuation.dataset import Dataset
 from pydvl.valuation.samplers.base import EvaluationStrategy, IndexSampler
 from pydvl.valuation.samplers.powerset import NoIndexIteration, PowersetSampler
@@ -66,6 +67,10 @@ from pydvl.valuation.types import (
 from pydvl.valuation.utility.base import UtilityBase
 
 __all__ = ["ClasswiseSampler"]
+
+if TYPE_CHECKING:
+    from torch import Tensor
+
 
 U = TypeVar("U")
 V = TypeVar("V")
@@ -104,7 +109,15 @@ def roundrobin(
             remaining_generators = cycle(islice(remaining_generators, n_active))
 
 
-def get_unique_labels(arr: Array[DT]) -> Array[DT]:
+@overload
+def get_unique_labels(arr: NDArray) -> NDArray: ...
+
+
+@overload
+def get_unique_labels(arr: Tensor) -> Tensor: ...
+
+
+def get_unique_labels(arr: NDArray | Tensor) -> NDArray | Tensor:
     """Returns unique labels in a categorical dataset.
 
     Args:
@@ -119,12 +132,11 @@ def get_unique_labels(arr: Array[DT]) -> Array[DT]:
         ValueError: If the input array is not of a categorical type.
     """
     if is_categorical(arr):
-        return cast(Array[DT], array_unique(arr))
-    else:
-        raise ValueError(
-            f"Input array has an unsupported data type for categorical labels: {type(arr)}. "
-            "Expected types: Object, String, Unicode, Unsigned integer, Signed integer, or Boolean."
-        )
+        return array_unique(arr)
+    raise ValueError(
+        f"Input array has an unsupported data type for categorical labels: {type(arr)}. "
+        "Expected types: Object, String, Unicode, Unsigned integer, Signed integer, or Boolean."
+    )
 
 
 class ClasswiseSampler(IndexSampler[ClasswiseSample, ValueUpdate]):
