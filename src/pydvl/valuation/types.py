@@ -30,7 +30,6 @@ from torch import Tensor
 from typing_extensions import Self, TypeAlias
 
 from pydvl.utils.array import (
-    Array,
     ArrayRetT,
     ArrayT,
     array_concatenate,
@@ -171,7 +170,7 @@ class Sample:
 
         return replace(self, idx=idx)
 
-    def with_subset(self, subset: Array[IndexT]) -> Self:
+    def with_subset(self, subset: NDArray[IndexT]) -> Self:
         """Return a copy of sample with the subset changed.
 
         Args:
@@ -257,8 +256,8 @@ class UtilityEvaluation:
         return iter((self.idx, self.subset, self.evaluation))
 
 
-class LossFunction(Protocol):
-    def __call__(self, y_true: Array, y_pred: Array) -> Array: ...
+class LossFunction(Protocol[ArrayT, ArrayRetT]):
+    def __call__(self, y_true: ArrayT, y_pred: ArrayT) -> ArrayRetT: ...
 
 
 class SemivalueCoefficient(Protocol):

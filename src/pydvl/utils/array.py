@@ -37,23 +37,17 @@ from types import ModuleType
 from typing import (
     TYPE_CHECKING,
     Any,
-    Iterator,
-    List,
     Literal,
-    Protocol,
     Sequence,
-    Tuple,
     TypeVar,
     Union,
     cast,
     overload,
-    runtime_checkable,
 )
 
 import numpy as np
 import sklearn.utils
 from numpy.typing import ArrayLike, NDArray
-from typing_extensions import Self
 
 __all__ = [
     "is_tensor",
@@ -70,6 +64,8 @@ __all__ = [
     "check_X_y",
     "check_X_y_torch",
     "try_torch_import",
+    "ArrayT",
+    "ArrayRetT",
 ]
 
 DT = TypeVar("DT", bound=np.generic)
@@ -110,67 +106,7 @@ def is_numpy(array: Any) -> bool:
     return isinstance(array, np.ndarray)
 
 
-@runtime_checkable
-class Array(Protocol[DT]):
-    """Protocol defining a common interface for NumPy arrays and PyTorch tensors.
-
-    This protocol defines the essential methods and properties required for array-like
-    operations in PyDVL. It serves as a structural type for both numpy.ndarray
-    and torch.Tensor, enabling type-safe generic functions that work with either type.
-
-    The generic parameter DT represents the data type of the array elements.
-
-    !!! note "Type Preservation"
-        Functions that accept Array types will generally preserve the input type
-        in their outputs. For example, if you pass a torch.Tensor, you'll get a
-        torch.Tensor back; if you pass a numpy.ndarray, you'll get a numpy.ndarray back.
-
-    !!! warning
-        This is a "best-effort" implementation that covers the methods and properties
-        needed by PyDVL, but it is not a complete representation of all functionality
-        in NumPy and PyTorch arrays.
-    """
-
-    @property
-    def nbytes(self) -> int: ...
-
-    @property
-    def shape(self) -> tuple[int, ...]: ...
-
-    @property
-    def ndim(self) -> int: ...
-
-    @property
-    def dtype(self) -> Any: ...
-
-    def __len__(self) -> int: ...
-
-    def __getitem__(self, key: Any) -> Self: ...
-
-    def __iter__(self) -> Iterator: ...
-
-    def __add__(self, other: Array) -> Array: ...
-
-    def __sub__(self, other) -> Array: ...
-
-    def __mul__(self, other) -> Array: ...
-
-    def __matmul__(self, other) -> Array: ...
-
-    def __array__(self, dtype: DT | None = None) -> NDArray[DT]: ...
-
-    def flatten(self, *args, **kwargs) -> Self: ...
-
-    def reshape(self, *args: Any, **kwargs: Any) -> Self: ...
-
-    def tolist(self) -> list: ...
-
-    def item(self) -> DT: ...
-
-    def sum(self, *args: Any, **kwargs: Any) -> Self: ...
-
-
-def to_tensor(array: Array | ArrayLike) -> Tensor:
+def to_tensor(array: NDArray | Tensor | ArrayLike) -> Tensor:
     """
     Convert array to torch.Tensor if it's not already.
 
@@ -190,7 +126,7 @@ def to_tensor(array: Array | ArrayLike) -> Tensor:
     return cast(Tensor, torch.as_tensor(array))
 
 
-def to_numpy(array: Array | ArrayLike) -> NDArray:
+def to_numpy(array: NDArray | Tensor | ArrayLike) -> NDArray:
     """
     Convert array to a numpy.ndarray if it's not already.
 
@@ -207,7 +143,7 @@ def to_numpy(array: Array | ArrayLike) -> NDArray:
     return cast(NDArray, np.asarray(array))
 
 
-ShapeType = Union[int, Tuple[int, ...], List[int]]
+ShapeType = Union[int, tuple[int, ...], list[int]]
 
 
 @overload
@@ -219,7 +155,7 @@ def array_unique(
 @overload
 def array_unique(
     array: NDArray, return_index: Literal[True], **kwargs: Any
-) -> Tuple[NDArray, NDArray]: ...
+) -> tuple[NDArray, NDArray]: ...
 
 
 @overload
@@ -231,12 +167,12 @@ def array_unique(
 @overload
 def array_unique(
     array: Tensor, return_index: Literal[True], **kwargs: Any
-) -> Tuple[Tensor, NDArray]: ...
+) -> tuple[Tensor, NDArray]: ...
 
 
 def array_unique(
     array: NDArray | Tensor, return_index: bool = False, **kwargs: Any
-) -> Union[NDArray | Tensor, Tuple[NDArray | Tensor, NDArray]]:
+) -> NDArray | tuple[NDArray, NDArray] | Tensor | tuple[Tensor, NDArray]:
     """
     Return the unique elements in an array, optionally with indices of their first
     occurrences.
@@ -265,9 +201,9 @@ def array_unique(
             indices_tensor = torch.tensor(
                 indices, dtype=torch.long, device=tensor_array.device
             )
-            return cast(Tuple[Tensor, NDArray], (result, indices_tensor.cpu().numpy()))
+            return cast(tuple[Tensor, NDArray], (result, indices_tensor.cpu().numpy()))
         return cast(Tensor, result)
-    else:  # Fallback to numpy approach.
+    else:
         numpy_array = to_numpy(array)
         if return_index:
             # np.unique returns a tuple when return_index=True
@@ -276,7 +212,7 @@ def array_unique(
                 return_index=True,
                 **{k: v for k, v in kwargs.items() if k != "return_index"},
             )
-            return cast(Tuple[NDArray, NDArray], (unique_vals, indices))
+            return cast(tuple[NDArray, NDArray], (unique_vals, indices))
         else:
             # Simple case - just unique values
             result = np.unique(
@@ -296,7 +232,7 @@ def array_concatenate(arrays: Sequence[Tensor], axis: int = 0) -> Tensor: ...
 
 
 def array_concatenate(
-    arrays: Sequence[NDArray | Tensor], axis: int = 0
+    arrays: Sequence[NDArray] | Sequence[Tensor], axis: int = 0
 ) -> NDArray | Tensor:
     """
     Join a sequence of arrays along an existing axis.
@@ -333,13 +269,25 @@ def array_concatenate(
     return cast(NDArray, np.concatenate(numpy_arrays, axis=axis))
 
 
-ArrayT = TypeVar("ArrayT", bound=Array, contravariant=True)
-ArrayRetT = TypeVar("ArrayRetT", bound=Array, covariant=True)
+ArrayT = TypeVar("ArrayT", NDArray, Tensor, contravariant=True)
+ArrayRetT = TypeVar("ArrayRetT", NDArray, Tensor, covariant=True)
+
+
+@overload
+def stratified_split_indices(
+    y: NDArray, train_size: float | int = 0.8, random_state: int | None = None
+) -> tuple[NDArray, NDArray]: ...
+
+
+@overload
+def stratified_split_indices(
+    y: Tensor, train_size: float | int = 0.8, random_state: int | None = None
+) -> tuple[Tensor, Tensor]: ...
 
 
 def stratified_split_indices(
-    y: ArrayT, train_size: float | int = 0.8, random_state: int | None = None
-) -> Tuple[ArrayT, ArrayT]:
+    y: NDArray | Tensor, train_size: float | int = 0.8, random_state: int | None = None
+) -> tuple[Tensor, Tensor] | tuple[NDArray, NDArray]:
     """
     Compute stratified train/test split indices based on labels.
 
@@ -371,7 +319,7 @@ def stratified_split_indices(
         train_cat = torch.cat(train_indices)
         test_cat = torch.cat(test_indices)
         return cast(
-            Tuple[ArrayT, ArrayT],
+            tuple[Tensor, Tensor],
             (
                 train_cat[torch.randperm(len(train_cat))],
                 test_cat[torch.randperm(len(test_cat))],
@@ -386,7 +334,7 @@ def stratified_split_indices(
             indices, train_size=train_size, stratify=y_np, random_state=random_state
         )
 
-        return cast(Tuple[ArrayT, ArrayT], (train_indices, test_indices))
+        return cast(tuple[NDArray, NDArray], (train_indices, test_indices))
 
 
 @overload
@@ -430,7 +378,7 @@ def check_X_y(
     multi_output: bool = False,
     estimator: str | object | None = None,
     copy: bool = False,
-) -> Tuple[NDArray, NDArray]: ...
+) -> tuple[NDArray, NDArray]: ...
 
 
 @overload
@@ -441,7 +389,7 @@ def check_X_y(
     multi_output: bool = False,
     estimator: str | object | None = None,
     copy: bool = False,
-) -> Tuple[Tensor, Tensor]: ...
+) -> tuple[Tensor, Tensor]: ...
 
 
 def check_X_y(
@@ -451,7 +399,7 @@ def check_X_y(
     multi_output: bool = False,
     estimator: str | object | None = None,
     copy: bool = False,
-) -> Tuple[NDArray | Tensor, NDArray | Tensor]:
+) -> tuple[NDArray, NDArray] | tuple[Tensor, Tensor]:
     """
     Validate X and y mimicking the functionality of sklearn's check_X_y.
 
@@ -483,7 +431,7 @@ def check_X_y(
             ),
         )
     return cast(
-        Tuple[NDArray, NDArray],
+        tuple[NDArray, NDArray],
         sklearn.utils.check_X_y(
             X, y, multi_output=multi_output, estimator=estimator, copy=copy
         ),
@@ -578,9 +526,7 @@ def check_X_y_torch(
     return X, y
 
 
-def array_count_nonzero(
-    x: Array,
-) -> int:
+def array_count_nonzero(x: NDArray | Tensor) -> int:
     """
     Count the number of non-zero elements in the array.
 
@@ -594,14 +540,12 @@ def array_count_nonzero(
         assert torch is not None
         tensor_array = cast(Tensor, x)
         return int(torch.count_nonzero(tensor_array).item())
-    else:  # Fallback to numpy approach
+    else:
         numpy_array = to_numpy(x)
         return int(np.count_nonzero(numpy_array))
 
 
-def array_nonzero(
-    x: ArrayT,
-) -> tuple[NDArray[np.int_], ...]:
+def array_nonzero(x: NDArray | Tensor) -> tuple[NDArray[np.int_], ...]:
     """
     Find the indices of non-zero elements.
 
@@ -609,8 +553,8 @@ def array_nonzero(
         x: Input array.
 
     Returns:
-        Tuple of arrays, one for each dimension of x,
-        containing the indices of the non-zero elements in that dimension.
+        Tuple of arrays, one for each dimension of x, containing the indices of the
+            non-zero elements in that dimension.
     """
     if is_tensor(x):
         assert torch is not None
@@ -619,7 +563,7 @@ def array_nonzero(
     return cast(tuple[NDArray, ...], np.nonzero(to_numpy(x)))
 
 
-def is_categorical(x: Array[Any]) -> bool:
+def is_categorical(x: NDArray | Tensor) -> bool:
     """
     Check if an array contains categorical data (suitable for unique labels).
 

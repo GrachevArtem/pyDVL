@@ -104,7 +104,7 @@ from numpy.typing import NDArray
 from typing_extensions import Self
 
 from pydvl.utils import log_running_moments
-from pydvl.utils.array import Array, is_tensor, to_numpy
+from pydvl.utils.array import is_tensor, to_numpy
 from pydvl.utils.status import Status
 from pydvl.utils.types import Seed
 from pydvl.valuation.dataset import Dataset
@@ -284,11 +284,11 @@ class ValuationResult(collections.abc.Sequence, Iterable[ValueItem]):
     def __init__(
         self,
         *,
-        values: Sequence[np.float64] | NDArray[np.float64] | Array,
-        variances: Sequence[np.float64] | NDArray[np.float64] | Array | None = None,
-        counts: Sequence[np.int_] | NDArray[np.int_] | Array | None = None,
-        indices: Sequence[IndexT] | NDArray[IndexT] | Array | None = None,
-        data_names: Sequence[NameT] | NDArray[NameT] | Array | None = None,
+        values: Sequence[np.float64] | NDArray[np.float64],
+        variances: Sequence[np.float64] | NDArray[np.float64] | None = None,
+        counts: Sequence[np.int_] | NDArray[np.int_] | None = None,
+        indices: Sequence[IndexT] | NDArray[IndexT] | None = None,
+        data_names: Sequence[NameT] | NDArray[NameT] | None = None,
         algorithm: str = "",
         status: Status = Status.Pending,
         sort: bool | None = None,
