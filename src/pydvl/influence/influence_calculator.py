@@ -23,6 +23,9 @@ __all__ = [
     "DaskInfluenceCalculator",
     "SequentialInfluenceCalculator",
     "DisableClientSingleThreadCheck",
+    "InvalidDimensionChunksError",
+    "UnalignedChunksError",
+    "ThreadSafetyViolationError",
 ]
 
 logger = logging.getLogger(__name__)

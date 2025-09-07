@@ -3,6 +3,8 @@ but the main features are tested in test_sampler.py"""
 
 from __future__ import annotations
 
+from typing import cast
+
 import numpy as np
 import pytest
 from numpy.typing import NDArray
@@ -26,9 +28,9 @@ class MockSampleSizeStrategy(SampleSizeStrategy):
         super().__init__(n_samples=sum(sample_sizes))
         self._sample_sizes = np.array(sample_sizes, dtype=int)
 
-    def sample_sizes(self, n_indices: int, probs: bool = True) -> NDArray[np.int64]:
+    def sample_sizes(self, n_indices: int, probs: bool = True) -> NDArray[np.int64]:  # type: ignore[override]
         if probs:
-            return self._sample_sizes / np.sum(self._sample_sizes)
+            return cast(NDArray, self._sample_sizes / np.sum(self._sample_sizes))
         return self._sample_sizes
 
     def fun(self, n_indices: int, subset_len: int) -> float:

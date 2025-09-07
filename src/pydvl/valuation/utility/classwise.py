@@ -9,9 +9,8 @@ from __future__ import annotations
 import numpy as np
 
 from pydvl.utils.caching import CacheBackend, CachedFuncConfig
-from pydvl.utils.types import SupervisedModel
 from pydvl.valuation.scorers.classwise import ClasswiseSupervisedScorer
-from pydvl.valuation.types import ClasswiseSample
+from pydvl.valuation.types import ClasswiseSample, SupervisedModel
 from pydvl.valuation.utility import ModelUtility
 
 __all__ = ["ClasswiseModelUtility"]
@@ -71,5 +70,7 @@ class ClasswiseModelUtility(ModelUtility[ClasswiseSample, SupervisedModel]):
         #   - set the label on the scorer
         #   - combine the in-class and out-of-class subsets
         self.scorer.label = sample.label
-        new_sample = sample.with_subset(np.union1d(sample.subset, sample.ooc_subset))
+        new_sample = sample.with_subset(
+            np.union1d(sample.subset, sample.ooc_subset).astype(np.int_),
+        )
         return super()._utility(new_sample)

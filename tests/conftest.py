@@ -7,7 +7,6 @@ from typing import Optional, Tuple
 import numpy as np
 import pytest
 from pytest import Config, FixtureRequest
-from sklearn import datasets
 from sklearn.utils import Bunch
 
 from pydvl.parallel import available_cpus
@@ -127,15 +126,6 @@ def memcached_client(
         raise ConnectionError(
             f"Could not connect to memcached at {memcache_client_config.server}"
         ) from e
-
-
-@pytest.fixture(scope="function")
-def housing_dataset(num_points, num_features) -> Dataset:
-    dataset = datasets.fetch_california_housing()
-    dataset.data = dataset.data[:num_points, :num_features]
-    dataset.feature_names = dataset.feature_names[:num_features]
-    dataset.target = dataset.target[:num_points]
-    return Dataset.from_sklearn(dataset, train_size=0.5)
 
 
 @pytest.fixture(scope="function")

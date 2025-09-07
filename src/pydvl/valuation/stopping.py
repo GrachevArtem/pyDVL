@@ -122,7 +122,7 @@ as described above for semi-values.
     valuation = BanzhafValuation(utility=utility, sampler=sampler, is_done=stopping)
     with parallel_config(n_jobs=4):
         valuation.fit(training_data)
-    result = valuation.values()
+    result = valuation.result
     ```
     This will compute the Banzhaf semivalues for `utility` until either the change in
     Spearman rank correlation between updates is below `1e-2` or `1000` updates have
@@ -207,9 +207,9 @@ from scipy.stats import spearmanr
 from typing_extensions import Self
 
 from pydvl.utils.status import Status
-from pydvl.utils.types import validate_number
 from pydvl.valuation.result import ValuationResult
 from pydvl.valuation.samplers.base import IndexSampler
+from pydvl.valuation.types import validate_number
 
 __all__ = [
     "AbsoluteStandardError",

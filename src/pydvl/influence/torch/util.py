@@ -59,6 +59,8 @@ __all__ = [
     "safe_torch_linalg_eigh",
     "SecondOrderMode",
     "get_model_parameters",
+    "TorchCatAggregator",
+    "NestedTorchCatAggregator",
 ]
 
 

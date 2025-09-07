@@ -7,8 +7,12 @@ alias:
 
 # Data Utility Learning  { #data-utility-learning-intro }
 
+!!! Example
+    See the notebook on [Data Utility Learning](/examples/shapley_utility_learning/)
+    for a complete example.
+
 DUL [@wang_improving_2022] uses an ML model $\hat{u}$ to learn the utility function
-$u:2^N \to \matbb{R}$ during the fitting phase of any valuation method. This
+$u:2^N \to \mathbb{R}$ during the fitting phase of any valuation method. This
 _utility model_ is trained with tuples $(S, U(S))$ for a certain warm-up period.
 Then it is used instead of $u$ in the valuation method. The cost of training
 $\hat{u}$ is quickly amortized by avoiding costly re-evaluations of the original
@@ -20,7 +24,7 @@ utility.
 In other words, DUL accelerates data valuation by learning the utility function
 from a small number of subsets. The process is as follows:
 
-1. Collect a given_budget_ of so-called _utility samples_ (subsets and their
+1. Collect a given _budget_ of so-called _utility samples_ (subsets and their
    utility values) during the normal course of data valuation.
 2. Fit a model $\hat{u}$ to the utility samples. The model is trained to predict
    the utility of new subsets.
@@ -50,10 +54,10 @@ Assuming you have some data valuation algorithm and your `utility` object:
    an indicator vector of the set as done in [@wang_improving_2022], with
    [IndicatorUtilityModel][pydvl.valuation.utility.learning.IndicatorUtilityModel].
    This wrapper accepts any machine learning model for the actual fitting.
-
    An alternative way to encode the data is to use a permutation-invariant model,
    such as [DeepSet][pydvl.valuation.utility.deepset.DeepSet] [@zaheer_deep_2017],
-   which is a simple architecture to learn embeddings for sets of points.
+   which is a simple architecture to learn embeddings for sets of points (see 
+   below).
 2. Wrap both your `utility` object and the utility model just constructed within
    a [DataUtilityLearning][pydvl.valuation.utility.learning.DataUtilityLearning].
 3. Use this last object in your data valuation algorithm instead of the original
@@ -73,27 +77,29 @@ implementation of a permutation-invariant model called [Deep
 Sets][deep-sets-intro] which can serve as guidance for a more complex
 architecture.
 
-!!! example "DUL with a linear regression model"
-    ??? Example
-        ``` python
-        from pydvl.valuation import Dataset, DataUtilityLearning, ModelUtility, \
-            Sample, SupervisedScorer
-        from sklearn.linear_model import LinearRegression, LogisticRegression
-        from sklearn.datasets import load_iris
+??? example "DUL with indicator encoding"
+    In this example we use a linear regression model to learn the utility
+    function, with inputs encoded as an indicator vector.
 
-        train, test = Dataset.from_sklearn(load_iris())
-        scorer = SupervisedScorer("accuracy", test, 0, (0,1))
-        utility = ModelUtility(LinearRegression(), scorer)
-        utility_model = IndicatorUtilityModel(LinearRegression(), len(train))
-        dul = DataUtilityLearning(utility, 300, utility_model)
-        valuation = ShapleyValuation(
-            utility=dul,
-            sampler=PermutationSampler(),
-            stopping=MaxUpdates(6000)
-        )
-        # Note: DUL does not support parallel training yet
-        valuation.fit(train)
-        ```
+    ``` python
+    from pydvl.valuation import Dataset, DataUtilityLearning, ModelUtility, \
+        Sample, SupervisedScorer
+    from sklearn.linear_model import LinearRegression, LogisticRegression
+    from sklearn.datasets import load_iris
+
+    train, test = Dataset.from_sklearn(load_iris())
+    scorer = SupervisedScorer("accuracy", test, 0, (0,1))
+    utility = ModelUtility(LinearRegression(), scorer)
+    utility_model = IndicatorUtilityModel(LinearRegression(), len(train))
+    dul = DataUtilityLearning(utility, 300, utility_model)
+    valuation = ShapleyValuation(
+        utility=dul,
+        sampler=PermutationSampler(),
+        stopping=MaxUpdates(6000)
+    )
+    # Note: DUL does not support parallel training yet
+    valuation.fit(train)
+    ```
 
 ## Deep Sets  { #deep-sets-intro }
 
@@ -109,31 +115,40 @@ $\rho$ that predicts the output $y$ from the aggregated representation:
 $$ y = \rho(\Phi(S)). $$
 
 
-!!! example "DUL with DeepSets"
-    ??? Example
-        This example requires pytorch installed.
-        ``` python
-        from pydvl.valuation import Dataset, DataUtilityLearning, ModelUtility, \
-            Sample, SupervisedScorer
-        from pydvl.valuation.utility.deepset import DeepSet
-        from sklearn.datasets import load_iris
+??? example "DUL with DeepSets"
+   (This example requires pytorch installed). Here we use a DeepSet model to
+   learn the utility function.
+    ``` python
+    from pydvl.valuation import Dataset, DataUtilityLearning, ModelUtility, \
+        Sample, SupervisedScorer
+    from pydvl.valuation.utility.deepset import DeepSetUtilityModel
+    from sklearn.datasets import load_iris
 
-        train, test = Dataset.from_sklearn(load_iris())
-        scorer = SupervisedScorer("accuracy", test, 0, (0,1))
-        utility = ModelUtility(LinearRegression(), scorer)
-        utility_model = DeepSet(
-            input_dim=len(train),
-            phi_hidden_dim=10,
-            phi_output_dim=20,
-            rho_hidden_dim=10
-        )
-        dul = DataUtilityLearning(utility, 3000, utility_model)
+    train, test = Dataset.from_sklearn(load_iris())
+    scorer = SupervisedScorer("accuracy", test, 0, (0,1))
+    utility = ModelUtility(LinearRegression(), scorer)
+    utility_model = DeepSetUtilityModel(
+        input_dim=len(train),
+        phi_hidden_dim=10,
+        phi_output_dim=20,
+        rho_hidden_dim=10
+    )
+    dul = DataUtilityLearning(utility, 3000, utility_model)
 
-        valuation = ShapleyValuation(
-            utility=dul,
-            sampler=PermutationSampler(),
-            stopping=MaxUpdates(10000)
-        )
-        # Note: DUL does not support parallel training yet
-        valuation.fit(train)
-        ```
+    valuation = ShapleyValuation(
+        utility=dul,
+        sampler=PermutationSampler(),
+        stopping=MaxUpdates(10000)
+    )
+    # Note: DUL does not support parallel training yet
+    valuation.fit(train)
+    ```
+
+## Other architectures
+
+As mentioned above, what makes DeepSets suitable for DUL is the
+permutation-invariance of the model, which is a required property of any
+estimator of a function defined over sets like the utility. Any alternative
+architecture with this property should work as well. Alternatively, one can use
+other encodings of the sets, as long as they are injective and invariant under
+permutations (or defined for fixed orderings as the indicator encoding above).

@@ -17,6 +17,12 @@ Shapley values. Empirically, one of the most useful methods is the so-called
 [Truncated Monte Carlo Shapley][tmcs-intro] [@ghorbani_data_2019], but several
 approximations exist with different convergence rates and computational costs.
 
+??? info "Support for torch models"
+    Starting from version 0.10.1, all Shapley value methods support both NumPy
+    arrays and PyTorch tensors as input data types. The implementation preserves
+    the input type throughout the computation, allowing integration with PyTorch
+    models. See [Tensor Support][tensor-support] for more details.
+
 
 ## Combinatorial Shapley  { #combinatorial-shapley-intro }
 
@@ -57,7 +63,7 @@ denotes the set $S$ with $x_i$ added.[^not1]
 
     with parallel_config(n_jobs=-1):
         valuation.fit(train)
-    result = valuation.values()
+    result = valuation.result
     ```
 
 We can convert the return value to a
@@ -92,17 +98,17 @@ and others are preferred, but if desired, usage follows the same pattern:
     valuation = ShapleyValuation(utility, sampler, stopping)
     with parallel_config(n_jobs=16):
         valuation.fit(training_data)
-    result = valuation.values()
+    result = valuation.result
     ```
 
-Note the usage of the object [MaxSamples][pydvl.value.stopping.MaxSamples] as
+Note the usage of the object [MaxSamples][pydvl.valuation.stopping.MaxSamples] as
 the stopping condition, which takes the sampler as argument. This is a special
-instance of a [StoppingCriterion][pydvl.value.stopping.StoppingCriterion]. More
+instance of a [StoppingCriterion][pydvl.valuation.stopping.StoppingCriterion]. More
 examples which are not tied to the sampler are
-[MaxTime][pydvl.value.stopping.MaxTime] (stops after a certain time),
-[MinUpdates][pydvl.value.stopping.MinUpdates] (looks at the number of updates
+[MaxTime][pydvl.valuation.stopping.MaxTime] (stops after a certain time),
+[MinUpdates][pydvl.valuation.stopping.MinUpdates] (looks at the number of updates
 to the individual values), and
-[AbsoluteStandardError][pydvl.value.stopping.AbsoluteStandardError] (not very
+[AbsoluteStandardError][pydvl.valuation.stopping.AbsoluteStandardError] (not very
 reliable as a stopping criterion), among others.
 
 
@@ -152,7 +158,7 @@ a way to reduce the variance of the estimator.
     [ShapleyValuation][pydvl.valuation.methods.shapley.ShapleyValuation] with a
     custom sampler, for instance
     [VRDSSampler][pydvl.valuation.samplers.stratified.VRDSSampler].
-    Note the use of the [History][pydvl.value.stopping.History] object, a stopping
+    Note the use of the [History][pydvl.valuation.stopping.History] object, a stopping
     which does not stop, but records the trace of value updates in a rolling
     memory. The data can then be used to check for convergence, debugging,
     plotting, etc.
@@ -173,7 +179,7 @@ a way to reduce the variance of the estimator.
     )
     with parallel_config(n_jobs=-4):
         valuation.fit(training_data)
-    results = valuation.values()
+    results = valuation.result
     ```
 
 ## Permutation Shapley  { #permutation-shapley-intro }
@@ -215,9 +221,9 @@ Monte Carlo Shapley** [@ghorbani_data_2019], which is efficient enough to be
 useful in applications. 
 
 The first is simply a convergence criterion, of which
-there are [several to choose from][pydvl.value.stopping]. The second is a
+there are [several to choose from][pydvl.valuation.stopping]. The second is a
 criterion to truncate the iteration over single permutations.
-[RelativeTruncation][pydvl.value.shapley.truncated.RelativeTruncation] chooses
+[RelativeTruncation][pydvl.valuation.samplers.truncation.RelativeTruncation] chooses
 to stop iterating over samples in a permutation when the marginal utility
 becomes too small. The method is available through the class
 [TMCShapleyValuation][pydvl.valuation.methods.shapley.TMCShapleyValuation].
@@ -240,8 +246,8 @@ You can see this method in action in
     Use of this object follows the same pattern as the previous examples, except
     that separate instantiation of the sampler is not necessary anymore. This
     has the drawback that we cannot use
-    [MaxSamples][pydvl.value.stopping.MaxSamples] as stopping criterion anymore
-    since it requires the sampler. To work around this, use
+    [MaxSamples][pydvl.valuation.stopping.MaxSamples] as stopping criterion
+    anymore since it requires the sampler. To work around this, use
     [ShapleyValuation][pydvl.valuation.methods.shapley.ShapleyValuation]
     directly.
 
@@ -263,7 +269,7 @@ You can see this method in action in
     valuation = TMCShapleyValuation(utility, truncation, stopping)
     with parallel_config(n_jobs=16):
         valuation.fit(training_data)
-    result = valuation.values()
+    result = valuation.result
     ```
 
 ## Other approximation methods
