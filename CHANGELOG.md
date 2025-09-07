@@ -12,6 +12,8 @@
   [skorch.NeuralNetClassifier](https://skorch.readthedocs.io/en/stable/classifier.html)
   models
   [PR #673](https://github.com/aai-institute/pyDVL/pull/673)
+- Improved documentation and examples using DeepSets for Data Utility Learning 
+  [PR #674](https://github.com/aai-institute/pyDVL/pull/674)
 
 ### Fixed
 
