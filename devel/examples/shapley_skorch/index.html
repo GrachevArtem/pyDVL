@@ -8,13 +8,13 @@
       
       
       
-        <link rel="canonical" href="https://pydvl.org/stable/examples/least_core_basic/">
+        <link rel="canonical" href="https://pydvl.org/stable/examples/shapley_skorch/">
       
       
-        <link rel="prev" href="../msr_banzhaf_digits/">
+        <link rel="prev" href="../shapley_basic_spotify/">
       
       
-        <link rel="next" href="../data_oob/">
+        <link rel="next" href="../shapley_knn_flowers/">
       
       
       <link rel="icon" href="../../assets/signet.svg">
@@ -22,7 +22,7 @@
     
     
       
-        <title>Least Core - pyDVL</title>
+        <title>Using pytorch models - pyDVL</title>
       
     
     
@@ -77,7 +77,7 @@
             data-collect-dnt="true"
             data-hostname="pydvl.org"></script>
     <noscript>
-        <img src="https://queue.simpleanalyticscdn.com/noscript.gif?collect-dnt=True&hostname=pydvl.org&path=examples/least_core_basic/"
+        <img src="https://queue.simpleanalyticscdn.com/noscript.gif?collect-dnt=True&hostname=pydvl.org&path=examples/shapley_skorch/"
              alt=""
              referrerpolicy="no-referrer-when-downgrade">
     </noscript>
@@ -91,11 +91,11 @@
       
         <meta  property="og:type"  content="website" >
       
-        <meta  property="og:title"  content="Least Core - pyDVL" >
+        <meta  property="og:title"  content="Using pytorch models - pyDVL" >
       
         <meta  property="og:description"  content="None" >
       
-        <meta  property="og:image"  content="https://pydvl.org/stable/assets/images/social/examples/least_core_basic.png" >
+        <meta  property="og:image"  content="https://pydvl.org/stable/assets/images/social/examples/shapley_skorch.png" >
       
         <meta  property="og:image:type"  content="image/png" >
       
@@ -103,15 +103,15 @@
       
         <meta  property="og:image:height"  content="630" >
       
-        <meta  property="og:url"  content="https://pydvl.org/stable/examples/least_core_basic/" >
+        <meta  property="og:url"  content="https://pydvl.org/stable/examples/shapley_skorch/" >
       
         <meta  name="twitter:card"  content="summary_large_image" >
       
-        <meta  name="twitter:title"  content="Least Core - pyDVL" >
+        <meta  name="twitter:title"  content="Using pytorch models - pyDVL" >
       
         <meta  name="twitter:description"  content="None" >
       
-        <meta  name="twitter:image"  content="https://pydvl.org/stable/assets/images/social/examples/least_core_basic.png" >
+        <meta  name="twitter:image"  content="https://pydvl.org/stable/assets/images/social/examples/shapley_skorch.png" >
       
     
     
@@ -143,7 +143,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#least-core-for-data-valuation" class="md-skip">
+        <a href="#computing-shapley-values-for-a-torch-model" class="md-skip">
           Skip to content
         </a>
       
@@ -194,7 +194,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Least Core
+              Using pytorch models
             
           </span>
         </div>
@@ -1345,10 +1345,32 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../shapley_skorch/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Using pytorch models
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -1359,6 +1381,53 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      Setup
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-dataset" class="md-nav__link">
+    <span class="md-ellipsis">
+      The dataset
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#creating-the-utility-using-a-skorch-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      Creating the utility using a skorch model
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1437,32 +1506,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    Least Core
-    
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../least_core_basic/" class="md-nav__link">
         
   
   
@@ -1473,86 +1520,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#setup" class="md-nav__link">
-    <span class="md-ellipsis">
-      Setup
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#dataset" class="md-nav__link">
-    <span class="md-ellipsis">
-      Dataset
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#estimating-least-core-values" class="md-nav__link">
-    <span class="md-ellipsis">
-      Estimating Least Core Values
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#data-removal" class="md-nav__link">
-    <span class="md-ellipsis">
-      Data Removal
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Data Removal">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#remove-best" class="md-nav__link">
-    <span class="md-ellipsis">
-      Remove Best
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#remove-worst" class="md-nav__link">
-    <span class="md-ellipsis">
-      Remove Worst
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -4034,53 +4001,20 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#dataset" class="md-nav__link">
+  <a href="#the-dataset" class="md-nav__link">
     <span class="md-ellipsis">
-      Dataset
+      The dataset
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#estimating-least-core-values" class="md-nav__link">
+  <a href="#creating-the-utility-using-a-skorch-model" class="md-nav__link">
     <span class="md-ellipsis">
-      Estimating Least Core Values
+      Creating the utility using a skorch model
     </span>
   </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#data-removal" class="md-nav__link">
-    <span class="md-ellipsis">
-      Data Removal
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Data Removal">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#remove-best" class="md-nav__link">
-    <span class="md-ellipsis">
-      Remove Best
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#remove-worst" class="md-nav__link">
-    <span class="md-ellipsis">
-      Remove Worst
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -4138,7 +4072,7 @@
  <div class="inner_cell">
   <div class="text_cell_render border-box-sizing rendered_html">
    <p>
-    <a href="https://mybinder.org/v2/gh/aai-institute/pyDVL/develop?urlpath=%2Ftree%2Fnotebooks/least_core_basic.ipynb">
+    <a href="https://mybinder.org/v2/gh/aai-institute/pyDVL/develop?urlpath=%2Ftree%2Fnotebooks/shapley_skorch.ipynb">
      <figure>
       <img src="https://mybinder.org/badge_logo.svg" style="margin: auto; display: block; width: 7rem"/>
      </figure>
@@ -4150,65 +4084,33 @@
 <div class="cell border-box-sizing text_cell rendered">
  <div class="inner_cell">
   <div class="text_cell_render border-box-sizing rendered_html">
-   <h1 id="least-core-for-data-valuation">
-    Least Core for Data Valuation
-    <a class="headerlink" href="#least-core-for-data-valuation" title="Permanent link">
+   <h1 id="computing-shapley-values-for-a-torch-model">
+    Computing Shapley values for a torch model
+    <a class="headerlink" href="#computing-shapley-values-for-a-torch-model" title="Permanent link">
      ¶
     </a>
    </h1>
    <p>
-    This notebook introduces Least Core methods for the computation of data values using pyDVL.
-   </p>
-   <p>
-    Shapley values define a fair way of distributing the worth of the whole training set when every data point is part of it. But they do not consider the question of stability of subsets: Could some data points obtain a higher payoff if they formed smaller subsets? It is argued that this might be relevant if data providers are paid based on data value, since Shapley values can incentivise them not to contribute their data to the "grand coalition", but instead try to form smaller ones. Whether this is of actual practical relevance is debatable, but in any case, the least core is an alternative tool available for any task of Data Valuation
-   </p>
-   <p>
-    The Core is another approach to compute data values originating in cooperative game theory that attempts to answer those questions. It is the set of feasible payoffs that cannot be improved upon by a coalition of the participants.
-   </p>
-   <p>
-    Its use for Data Valuation was first described in the paper
-    <a href="https://ojs.aaai.org/index.php/AAAI/article/view/16721">
-     <em>
-      If You Like Shapley Then You’ll Love the Core
-     </em>
+    This notebook illustrates how to wrap a
+    <code>
+     torch.nn.Module
+    </code>
+    model using
+    <a href="https://skorch.readthedocs.io/en/stable/">
+     skorch
     </a>
-    by Tom Yan and Ariel D. Procaccia.
-   </p>
-   <p>
-    The Least Core value
-    <span class="arithmatex">
-     \(v\)
-    </span>
-    of the
-    <span class="arithmatex">
-     \(i\)
-    </span>
-    -th sample in dataset
-    <span class="arithmatex">
-     \(D\)
-    </span>
-    wrt. utility
-    <span class="arithmatex">
-     \(u\)
-    </span>
-    is computed
-by solving the following Linear Program:
-   </p>
-   <div class="arithmatex">
-    \[
-\begin{array}{lll}
-\text{minimize} &amp; \displaystyle{e} &amp; \\
-\text{subject to} &amp; \displaystyle\sum_{x_i\in D} v_u(x_i) = u(D) &amp; \\
-&amp; \displaystyle\sum_{x_i\in S} v_u(x_i) + e \geq u(S) &amp;, \forall S \subset D, S \neq \emptyset \\
-\end{array}
-\]
-   </div>
-   <p>
-    To illustrate this method we will use a synthetic dataset. We will first use a subset of 10 data point to compute the exact values and use them to assess the Monte Carlo approximation. Afterwards, we will conduct the data removal experiments as described by Ghorbani and Zou in their paper
-    <a href="https://arxiv.org/abs/1904.02868v1">
-     Data Shapley: Equitable Valuation of Data for Machine Learning
+    and use it with pyDVL to compute Shapley values. The model is a simple convolutional neural network (CNN) that classifies handwritten digits from the
+    <a href="http://yann.lecun.com/exdb/mnist/">
+     MNIST
     </a>
-    : We compute the data valuation given different computation budgets and incrementally remove a percentage of the best, respectively worst, data points and observe how that affects the utility.
+    dataset.
+   </p>
+   <p>
+    The notebook follows almost verbatim the first few steps of the notebook on
+    <abbr title="Maximum Sample Reuse">
+     MSR
+    </abbr>
+    Banzhaf.
    </p>
   </div>
  </div>
@@ -4222,9 +4124,6 @@ by solving the following Linear Program:
      ¶
     </a>
    </h2>
-   <p>
-    We begin by importing the main libraries and setting some defaults.
-   </p>
    <div class="alert alert-info">
     If you are reading this in the documentation, some boilerplate (including most plotting code) has been omitted for convenience.
    </div>
@@ -4234,8 +4133,22 @@ by solving the following Linear Program:
 <div class="cell border-box-sizing text_cell rendered">
  <div class="inner_cell">
   <div class="text_cell_render border-box-sizing rendered_html">
+   <h2 id="the-dataset">
+    The dataset
+    <a class="headerlink" href="#the-dataset" title="Permanent link">
+     ¶
+    </a>
+   </h2>
    <p>
-    We will be using the following functions and classes from pyDVL.
+    The data consists of ~1800 grayscale images of 8x8 pixels with 16 shades of gray. These images contain handwritten digits from 0 to 9. The helper function
+    <code>
+     load_digits_dataset()
+    </code>
+    downloads and prepares it for usage returning two
+    <a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-toc doc-symbol-class&quot;&gt;&lt;/code&gt;&amp;nbsp;Dataset" href="../../api/pydvl/valuation/dataset/#pydvl.valuation.dataset.Dataset">
+     Datasets
+    </a>
+    .
    </p>
   </div>
  </div>
@@ -4243,42 +4156,43 @@ by solving the following Linear Program:
 <div class="cell border-box-sizing code_cell rendered">
  <div class="input">
   <div class="language-python highlight">
-   <pre><span></span><code><span id="__span-0-1"><a href="#__codelineno-0-1" id="__codelineno-0-1" name="__codelineno-0-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">pydvl.reporting.plots</span><span class="w"> </span><span class="kn">import</span> <span class="n">shaded_mean_std</span>
-</span><span id="__span-0-2"><a href="#__codelineno-0-2" id="__codelineno-0-2" name="__codelineno-0-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">pydvl.reporting.scores</span><span class="w"> </span><span class="kn">import</span> <span class="n">compute_removal_score</span>
-</span><span id="__span-0-3"><a href="#__codelineno-0-3" id="__codelineno-0-3" name="__codelineno-0-3"></a><span class="kn">from</span><span class="w"> </span><span class="nn">pydvl.valuation</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
-</span><span id="__span-0-4"><a href="#__codelineno-0-4" id="__codelineno-0-4" name="__codelineno-0-4"></a>    <span class="n">Dataset</span><span class="p">,</span>
-</span><span id="__span-0-5"><a href="#__codelineno-0-5" id="__codelineno-0-5" name="__codelineno-0-5"></a>    <span class="n">ExactLeastCoreValuation</span><span class="p">,</span>
-</span><span id="__span-0-6"><a href="#__codelineno-0-6" id="__codelineno-0-6" name="__codelineno-0-6"></a>    <span class="n">ModelUtility</span><span class="p">,</span>
-</span><span id="__span-0-7"><a href="#__codelineno-0-7" id="__codelineno-0-7" name="__codelineno-0-7"></a>    <span class="n">MonteCarloLeastCoreValuation</span><span class="p">,</span>
-</span><span id="__span-0-8"><a href="#__codelineno-0-8" id="__codelineno-0-8" name="__codelineno-0-8"></a>    <span class="n">SupervisedScorer</span><span class="p">,</span>
-</span><span id="__span-0-9"><a href="#__codelineno-0-9" id="__codelineno-0-9" name="__codelineno-0-9"></a><span class="p">)</span>
+   <pre><span></span><code><span id="__span-0-1"><a href="#__codelineno-0-1" id="__codelineno-0-1" name="__codelineno-0-1"></a><span class="n">train</span><span class="p">,</span> <span class="n">test</span> <span class="o">=</span> <span class="n">load_digits_dataset</span><span class="p">(</span>
+</span><span id="__span-0-2"><a href="#__codelineno-0-2" id="__codelineno-0-2" name="__codelineno-0-2"></a>    <span class="n">train_size</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="n">random_state</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span>
+</span><span id="__span-0-3"><a href="#__codelineno-0-3" id="__codelineno-0-3" name="__codelineno-0-3"></a><span class="p">)</span>
 </span></code></pre>
+  </div>
+ </div>
+</div>
+<div class="cell border-box-sizing code_cell rendered celltag_hide-input celltag_invertible-output">
+ <div class="output_wrapper">
+  <div class="output">
+   <div class="output_area">
+    <div class="output_png output_subarea">
+     <img alt="No description has been provided for this image" src="data:image/png;base64,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"/>
+    </div>
+   </div>
   </div>
  </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered">
  <div class="inner_cell">
   <div class="text_cell_render border-box-sizing rendered_html">
-   <h2 id="dataset">
-    Dataset
-    <a class="headerlink" href="#dataset" title="Permanent link">
+   <h2 id="creating-the-utility-using-a-skorch-model">
+    Creating the utility using a skorch model
+    <a class="headerlink" href="#creating-the-utility-using-a-skorch-model" title="Permanent link">
      ¶
     </a>
    </h2>
    <p>
-    We generate a synthetic dataset using the
-    <a href="https://scikit-learn.org/stable/modules/generated/sklearn.datasets.make_classification.html">
-     <code>
-      make_classification
-     </code>
-    </a>
-    function from scikit-learn.
-   </p>
-   <p>
-    We sample 200 data points from a 50-dimensional Gaussian distribution with 25 informative features and 25 non-informative features (generated as random linear combinations of the informative features).
-   </p>
-   <p>
-    The 200 samples are uniformly distributed across 3 classes with a small percentage of noise added to the labels to make the task a bit more difficult.
+    Now we can calculate the contribution of each training sample to the model performance. We use a simple CNN written in torch wrapped as a skorch model. Something to keep in mind is to pass
+    <code>
+     torch_load_kwargs={"weights_only": False}
+    </code>
+    to the
+    <code>
+     NeuralNetClassifier
+    </code>
+    constructor, otherwise the model will fail to pickle and parallelization won't work.
    </p>
   </div>
  </div>
@@ -4286,57 +4200,65 @@ by solving the following Linear Program:
 <div class="cell border-box-sizing code_cell rendered">
  <div class="input">
   <div class="language-python highlight">
-   <pre><span></span><code><span id="__span-1-1"><a href="#__codelineno-1-1" id="__codelineno-1-1" name="__codelineno-1-1"></a><span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">make_classification</span><span class="p">(</span>
-</span><span id="__span-1-2"><a href="#__codelineno-1-2" id="__codelineno-1-2" name="__codelineno-1-2"></a>    <span class="n">n_samples</span><span class="o">=</span><span class="n">dataset_size</span><span class="p">,</span>
-</span><span id="__span-1-3"><a href="#__codelineno-1-3" id="__codelineno-1-3" name="__codelineno-1-3"></a>    <span class="n">n_features</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
-</span><span id="__span-1-4"><a href="#__codelineno-1-4" id="__codelineno-1-4" name="__codelineno-1-4"></a>    <span class="n">n_informative</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span>
-</span><span id="__span-1-5"><a href="#__codelineno-1-5" id="__codelineno-1-5" name="__codelineno-1-5"></a>    <span class="n">n_classes</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
-</span><span id="__span-1-6"><a href="#__codelineno-1-6" id="__codelineno-1-6" name="__codelineno-1-6"></a>    <span class="n">random_state</span><span class="o">=</span><span class="n">seed</span><span class="p">,</span>
-</span><span id="__span-1-7"><a href="#__codelineno-1-7" id="__codelineno-1-7" name="__codelineno-1-7"></a><span class="p">)</span>
-</span><span id="__span-1-8"><a href="#__codelineno-1-8" id="__codelineno-1-8" name="__codelineno-1-8"></a>
-</span><span id="__span-1-9"><a href="#__codelineno-1-9" id="__codelineno-1-9" name="__codelineno-1-9"></a><span class="n">train</span><span class="p">,</span> <span class="n">test</span> <span class="o">=</span> <span class="n">Dataset</span><span class="o">.</span><span class="n">from_arrays</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">stratify_by_target</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="n">seed</span><span class="p">)</span>
-</span></code></pre>
-  </div>
- </div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
- <div class="input">
-  <div class="language-python highlight">
-   <pre><span></span><code><span id="__span-2-1"><a href="#__codelineno-2-1" id="__codelineno-2-1" name="__codelineno-2-1"></a><span class="n">model</span> <span class="o">=</span> <span class="n">LogisticRegression</span><span class="p">(</span><span class="n">max_iter</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">solver</span><span class="o">=</span><span class="s2">"liblinear"</span><span class="p">)</span>
-</span><span id="__span-2-2"><a href="#__codelineno-2-2" id="__codelineno-2-2" name="__codelineno-2-2"></a><span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">train</span><span class="o">.</span><span class="n">data</span><span class="p">()</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">train</span><span class="o">.</span><span class="n">data</span><span class="p">()</span><span class="o">.</span><span class="n">y</span><span class="p">);</span>
+   <pre><span></span><code><span id="__span-1-1"><a href="#__codelineno-1-1" id="__codelineno-1-1" name="__codelineno-1-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">skorch</span><span class="w"> </span><span class="kn">import</span> <span class="n">NeuralNetClassifier</span>
+</span><span id="__span-1-2"><a href="#__codelineno-1-2" id="__codelineno-1-2" name="__codelineno-1-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">support.banzhaf</span><span class="w"> </span><span class="kn">import</span> <span class="n">SimpleCNN</span>
+</span><span id="__span-1-3"><a href="#__codelineno-1-3" id="__codelineno-1-3" name="__codelineno-1-3"></a>
+</span><span id="__span-1-4"><a href="#__codelineno-1-4" id="__codelineno-1-4" name="__codelineno-1-4"></a><span class="n">model</span> <span class="o">=</span> <span class="n">NeuralNetClassifier</span><span class="p">(</span>
+</span><span id="__span-1-5"><a href="#__codelineno-1-5" id="__codelineno-1-5" name="__codelineno-1-5"></a>    <span class="n">SimpleCNN</span><span class="p">,</span>
+</span><span id="__span-1-6"><a href="#__codelineno-1-6" id="__codelineno-1-6" name="__codelineno-1-6"></a>    <span class="n">criterion</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">CrossEntropyLoss</span><span class="p">,</span>
+</span><span id="__span-1-7"><a href="#__codelineno-1-7" id="__codelineno-1-7" name="__codelineno-1-7"></a>    <span class="n">lr</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>
+</span><span id="__span-1-8"><a href="#__codelineno-1-8" id="__codelineno-1-8" name="__codelineno-1-8"></a>    <span class="n">max_epochs</span><span class="o">=</span><span class="n">n_epochs</span><span class="p">,</span>
+</span><span id="__span-1-9"><a href="#__codelineno-1-9" id="__codelineno-1-9" name="__codelineno-1-9"></a>    <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span>
+</span><span id="__span-1-10"><a href="#__codelineno-1-10" id="__codelineno-1-10" name="__codelineno-1-10"></a>    <span class="n">train_split</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-1-11"><a href="#__codelineno-1-11" id="__codelineno-1-11" name="__codelineno-1-11"></a>    <span class="n">optimizer</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">,</span>
+</span><span id="__span-1-12"><a href="#__codelineno-1-12" id="__codelineno-1-12" name="__codelineno-1-12"></a>    <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">,</span>
+</span><span id="__span-1-13"><a href="#__codelineno-1-13" id="__codelineno-1-13" name="__codelineno-1-13"></a>    <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+</span><span id="__span-1-14"><a href="#__codelineno-1-14" id="__codelineno-1-14" name="__codelineno-1-14"></a>    <span class="n">torch_load_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s2">"weights_only"</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span>
+</span><span id="__span-1-15"><a href="#__codelineno-1-15" id="__codelineno-1-15" name="__codelineno-1-15"></a><span class="p">)</span>
+</span><span id="__span-1-16"><a href="#__codelineno-1-16" id="__codelineno-1-16" name="__codelineno-1-16"></a><span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="o">*</span><span class="n">train</span><span class="o">.</span><span class="n">data</span><span class="p">());</span>
 </span></code></pre>
   </div>
  </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered celltag_hide-input">
+ <div class="output_wrapper">
+  <div class="output">
+   <div class="output_area">
+    <div class="output_subarea output_stream output_stdout output_text">
+     <pre>
+<code>Training accuracy: 0.984
+Test accuracy: 0.971
+</code>
+</pre>
+    </div>
+   </div>
+  </div>
+ </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered">
  <div class="inner_cell">
   <div class="text_cell_render border-box-sizing rendered_html">
-   <h2 id="estimating-least-core-values">
-    Estimating Least Core Values
-    <a class="headerlink" href="#estimating-least-core-values" title="Permanent link">
-     ¶
-    </a>
-   </h2>
    <p>
-    In this first section we use a smaller subset of the dataset containing 12 samples in order to be able to compute exact values reasonably fast. Recall that, in order to assemble the problem, for every subset
+    As with every model-based valuation method, we need a scoring function to measure the performance of the model over the test set. We will use accuracy, but it can be anything, e.g.
     <span class="arithmatex">
-     \(S \subset D\)
+     \(R^2\)
     </span>
-    we must compute the utility
-    <span class="arithmatex">
-     \(u(S).\)
-    </span>
-    We then have a linear problem with
-    <span class="arithmatex">
-     \(2^{|D|}\)
-    </span>
-    constraints to solve. After doing this, we use the Monte Carlo method with a limited budget (maximum number of constraints) to approximate the
-    <abbr title="Least Core">
-     LC
-    </abbr>
-    values on the same reduced dataset, and we repeat this several times to assess the stability of the approximation.
+    , using strings from the
+    <a href="https://scikit-learn.org/stable/modules/model_evaluation.html">
+     standard sklearn scoring methods
+    </a>
+    , passed to
+    <a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-toc doc-symbol-class&quot;&gt;&lt;/code&gt;&amp;nbsp;SkorchSupervisedScorer" href="../../api/pydvl/valuation/scorers/skorch/#pydvl.valuation.scorers.skorch.SkorchSupervisedScorer">
+     SkorchSupervisedScorer
+    </a>
+    .
+   </p>
+   <p>
+    We group our skorch model and the scoring function into an instance of
+    <a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-toc doc-symbol-class&quot;&gt;&lt;/code&gt;&amp;nbsp;ModelUtility" href="../../api/pydvl/valuation/utility/modelutility/#pydvl.valuation.utility.modelutility.ModelUtility">
+     ModelUtility
+    </a>
+    .
    </p>
   </div>
  </div>
@@ -4344,11 +4266,67 @@ by solving the following Linear Program:
 <div class="cell border-box-sizing code_cell rendered">
  <div class="input">
   <div class="language-python highlight">
-   <pre><span></span><code><span id="__span-3-1"><a href="#__codelineno-3-1" id="__codelineno-3-1" name="__codelineno-3-1"></a><span class="n">train_mini</span> <span class="o">=</span> <span class="n">train</span><span class="p">[:</span><span class="n">train_mini_size</span><span class="p">]</span>
-</span><span id="__span-3-2"><a href="#__codelineno-3-2" id="__codelineno-3-2" name="__codelineno-3-2"></a><span class="n">scorer</span> <span class="o">=</span> <span class="n">SupervisedScorer</span><span class="p">(</span><span class="s2">"accuracy"</span><span class="p">,</span> <span class="n">test_data</span><span class="o">=</span><span class="n">test</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="nb">range</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
-</span><span id="__span-3-3"><a href="#__codelineno-3-3" id="__codelineno-3-3" name="__codelineno-3-3"></a><span class="n">utility</span> <span class="o">=</span> <span class="n">ModelUtility</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span> <span class="n">scorer</span><span class="o">=</span><span class="n">scorer</span><span class="p">)</span>
-</span><span id="__span-3-4"><a href="#__codelineno-3-4" id="__codelineno-3-4" name="__codelineno-3-4"></a><span class="n">valuation</span> <span class="o">=</span> <span class="n">ExactLeastCoreValuation</span><span class="p">(</span><span class="n">utility</span><span class="o">=</span><span class="n">utility</span><span class="p">)</span>
+   <pre><span></span><code><span id="__span-2-1"><a href="#__codelineno-2-1" id="__codelineno-2-1" name="__codelineno-2-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">pydvl.valuation.scorers</span><span class="w"> </span><span class="kn">import</span> <span class="n">SkorchSupervisedScorer</span>
+</span><span id="__span-2-2"><a href="#__codelineno-2-2" id="__codelineno-2-2" name="__codelineno-2-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">pydvl.valuation.stopping</span><span class="w"> </span><span class="kn">import</span> <span class="n">MinUpdates</span>
+</span><span id="__span-2-3"><a href="#__codelineno-2-3" id="__codelineno-2-3" name="__codelineno-2-3"></a><span class="kn">from</span><span class="w"> </span><span class="nn">pydvl.valuation.utility</span><span class="w"> </span><span class="kn">import</span> <span class="n">ModelUtility</span>
+</span><span id="__span-2-4"><a href="#__codelineno-2-4" id="__codelineno-2-4" name="__codelineno-2-4"></a>
+</span><span id="__span-2-5"><a href="#__codelineno-2-5" id="__codelineno-2-5" name="__codelineno-2-5"></a><span class="n">accuracy_over_test_set</span> <span class="o">=</span> <span class="n">SkorchSupervisedScorer</span><span class="p">(</span>
+</span><span id="__span-2-6"><a href="#__codelineno-2-6" id="__codelineno-2-6" name="__codelineno-2-6"></a>    <span class="n">model</span><span class="p">,</span> <span class="n">test_data</span><span class="o">=</span><span class="n">test</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="nb">range</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+</span><span id="__span-2-7"><a href="#__codelineno-2-7" id="__codelineno-2-7" name="__codelineno-2-7"></a><span class="p">)</span>
+</span><span id="__span-2-8"><a href="#__codelineno-2-8" id="__codelineno-2-8" name="__codelineno-2-8"></a>
+</span><span id="__span-2-9"><a href="#__codelineno-2-9" id="__codelineno-2-9" name="__codelineno-2-9"></a><span class="n">utility</span> <span class="o">=</span> <span class="n">ModelUtility</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span> <span class="n">scorer</span><span class="o">=</span><span class="n">accuracy_over_test_set</span><span class="p">)</span>
 </span></code></pre>
+  </div>
+ </div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+ <div class="inner_cell">
+  <div class="text_cell_render border-box-sizing rendered_html">
+   <p>
+    In order to compute Shapley values, we use
+    <a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-toc doc-symbol-class&quot;&gt;&lt;/code&gt;&amp;nbsp;TMCShapleyValuation" href="../../api/pydvl/valuation/methods/shapley/#pydvl.valuation.methods.shapley.TMCShapleyValuation">
+     TMCShapleyValuation
+    </a>
+    .
+   </p>
+   <p>
+    We choose to stop computation using the
+    <a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-toc doc-symbol-class&quot;&gt;&lt;/code&gt;&amp;nbsp;MinUpdates" href="../../api/pydvl/valuation/stopping/#pydvl.valuation.stopping.MinUpdates">
+     MinUpdates
+    </a>
+    stopping criterion, which terminates after a fixed number of value updates.
+   </p>
+   <p>
+    We also define a relative
+    <a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-toc doc-symbol-class&quot;&gt;&lt;/code&gt;&amp;nbsp;TruncationPolicy" href="../../api/pydvl/valuation/samplers/truncation/#pydvl.valuation.samplers.truncation.TruncationPolicy">
+     TruncationPolicy
+    </a>
+    , which is a policy used to early-stop computation of marginal values in permutations, once the utility is close to the total utility. This is a heuristic to speed up computation introduced in the Data-Shapley paper called Truncated Monte Carlo Shapley. Note how we tell it to wait until at least 30% of every permutation has been processed in order to start evaluation. This is to ensure that noise doesn't stop the computation too early.
+   </p>
+  </div>
+ </div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+ <div class="input">
+  <div class="language-python highlight">
+   <pre><span></span><code><span id="__span-3-1"><a href="#__codelineno-3-1" id="__codelineno-3-1" name="__codelineno-3-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">pydvl.valuation.samplers</span><span class="w"> </span><span class="kn">import</span> <span class="n">RelativeTruncation</span>
+</span><span id="__span-3-2"><a href="#__codelineno-3-2" id="__codelineno-3-2" name="__codelineno-3-2"></a>
+</span><span id="__span-3-3"><a href="#__codelineno-3-3" id="__codelineno-3-3" name="__codelineno-3-3"></a><span class="n">truncation</span> <span class="o">=</span> <span class="n">RelativeTruncation</span><span class="p">(</span><span class="n">rtol</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">burn_in_fraction</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+</span><span id="__span-3-4"><a href="#__codelineno-3-4" id="__codelineno-3-4" name="__codelineno-3-4"></a><span class="n">stopping</span> <span class="o">=</span> <span class="n">MinUpdates</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+</span></code></pre>
+  </div>
+ </div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+ <div class="inner_cell">
+  <div class="text_cell_render border-box-sizing rendered_html">
+   <p>
+    We now instantiate and fit the valuation. Note how parallelization is just a matter of using joblib's context manager
+    <code>
+     parallel_config
+    </code>
+    in order to set the number of jobs.
+   </p>
   </div>
  </div>
 </div>
@@ -4357,92 +4335,29 @@ by solving the following Linear Program:
   <div class="language-python highlight">
    <pre><span></span><code><span id="__span-4-1"><a href="#__codelineno-4-1" id="__codelineno-4-1" name="__codelineno-4-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">joblib</span><span class="w"> </span><span class="kn">import</span> <span class="n">parallel_config</span>
 </span><span id="__span-4-2"><a href="#__codelineno-4-2" id="__codelineno-4-2" name="__codelineno-4-2"></a>
-</span><span id="__span-4-3"><a href="#__codelineno-4-3" id="__codelineno-4-3" name="__codelineno-4-3"></a><span class="k">with</span> <span class="n">parallel_config</span><span class="p">(</span><span class="n">n_jobs</span><span class="o">=</span><span class="n">n_jobs</span><span class="p">):</span>
-</span><span id="__span-4-4"><a href="#__codelineno-4-4" id="__codelineno-4-4" name="__codelineno-4-4"></a>    <span class="n">valuation</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">train_mini</span><span class="p">)</span>
+</span><span id="__span-4-3"><a href="#__codelineno-4-3" id="__codelineno-4-3" name="__codelineno-4-3"></a><span class="kn">from</span><span class="w"> </span><span class="nn">pydvl.valuation.methods</span><span class="w"> </span><span class="kn">import</span> <span class="n">TMCShapleyValuation</span>
+</span><span id="__span-4-4"><a href="#__codelineno-4-4" id="__codelineno-4-4" name="__codelineno-4-4"></a>
+</span><span id="__span-4-5"><a href="#__codelineno-4-5" id="__codelineno-4-5" name="__codelineno-4-5"></a><span class="n">valuation</span> <span class="o">=</span> <span class="n">TMCShapleyValuation</span><span class="p">(</span>
+</span><span id="__span-4-6"><a href="#__codelineno-4-6" id="__codelineno-4-6" name="__codelineno-4-6"></a>    <span class="n">utility</span><span class="p">,</span> <span class="n">truncation</span><span class="o">=</span><span class="n">truncation</span><span class="p">,</span> <span class="n">is_done</span><span class="o">=</span><span class="n">stopping</span><span class="p">,</span> <span class="n">progress</span><span class="o">=</span><span class="kc">True</span>
+</span><span id="__span-4-7"><a href="#__codelineno-4-7" id="__codelineno-4-7" name="__codelineno-4-7"></a><span class="p">)</span>
+</span><span id="__span-4-8"><a href="#__codelineno-4-8" id="__codelineno-4-8" name="__codelineno-4-8"></a>
+</span><span id="__span-4-9"><a href="#__codelineno-4-9" id="__codelineno-4-9" name="__codelineno-4-9"></a><span class="c1"># filecache is a very simple wrapper not intended for production code</span>
+</span><span id="__span-4-10"><a href="#__codelineno-4-10" id="__codelineno-4-10" name="__codelineno-4-10"></a><span class="n">cached_fit</span> <span class="o">=</span> <span class="n">filecache</span><span class="p">(</span><span class="s2">"shapley_skorch_result.pkl"</span><span class="p">)(</span><span class="k">lambda</span> <span class="n">d</span><span class="p">:</span> <span class="n">valuation</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">d</span><span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">)</span>
+</span><span id="__span-4-11"><a href="#__codelineno-4-11" id="__codelineno-4-11" name="__codelineno-4-11"></a><span class="k">with</span> <span class="n">parallel_config</span><span class="p">(</span><span class="n">n_jobs</span><span class="o">=</span><span class="n">n_jobs</span><span class="p">):</span>
+</span><span id="__span-4-12"><a href="#__codelineno-4-12" id="__codelineno-4-12" name="__codelineno-4-12"></a>    <span class="n">result</span> <span class="o">=</span> <span class="n">cached_fit</span><span class="p">(</span><span class="n">train</span><span class="p">)</span>
 </span></code></pre>
   </div>
  </div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
- <div class="input">
-  <div class="language-python highlight">
-   <pre><span></span><code><span id="__span-5-1"><a href="#__codelineno-5-1" id="__codelineno-5-1" name="__codelineno-5-1"></a><span class="n">exact_result</span> <span class="o">=</span> <span class="n">valuation</span><span class="o">.</span><span class="n">result</span>
-</span><span id="__span-5-2"><a href="#__codelineno-5-2" id="__codelineno-5-2" name="__codelineno-5-2"></a><span class="n">exact_df</span> <span class="o">=</span> <span class="n">exact_result</span><span class="o">.</span><span class="n">to_dataframe</span><span class="p">(</span><span class="n">column</span><span class="o">=</span><span class="s2">"exact"</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
-</span><span id="__span-5-3"><a href="#__codelineno-5-3" id="__codelineno-5-3" name="__codelineno-5-3"></a><span class="n">exact_df</span> <span class="o">=</span> <span class="n">exact_df</span><span class="p">[</span><span class="nb">sorted</span><span class="p">(</span><span class="n">exact_df</span><span class="o">.</span><span class="n">columns</span><span class="p">)]</span>
-</span></code></pre>
-  </div>
- </div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
- <div class="input">
-  <div class="language-python highlight">
-   <pre><span></span><code><span id="__span-6-1"><a href="#__codelineno-6-1" id="__codelineno-6-1" name="__codelineno-6-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">relative_error</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">estimate</span><span class="p">,</span> <span class="n">norm</span><span class="p">):</span>
-</span><span id="__span-6-2"><a href="#__codelineno-6-2" id="__codelineno-6-2" name="__codelineno-6-2"></a>    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">estimate</span><span class="p">,</span> <span class="nb">ord</span><span class="o">=</span><span class="n">norm</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">ord</span><span class="o">=</span><span class="n">norm</span><span class="p">)</span>
-</span><span id="__span-6-3"><a href="#__codelineno-6-3" id="__codelineno-6-3" name="__codelineno-6-3"></a>
-</span><span id="__span-6-4"><a href="#__codelineno-6-4" id="__codelineno-6-4" name="__codelineno-6-4"></a>
-</span><span id="__span-6-5"><a href="#__codelineno-6-5" id="__codelineno-6-5" name="__codelineno-6-5"></a><span class="n">budget_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logspace</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">train_mini</span><span class="p">),</span> <span class="n">base</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">endpoint</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
-</span><span id="__span-6-6"><a href="#__codelineno-6-6" id="__codelineno-6-6" name="__codelineno-6-6"></a>
-</span><span id="__span-6-7"><a href="#__codelineno-6-7" id="__codelineno-6-7" name="__codelineno-6-7"></a><span class="n">all_estimated_values_df</span> <span class="o">=</span> <span class="p">[]</span>
-</span><span id="__span-6-8"><a href="#__codelineno-6-8" id="__codelineno-6-8" name="__codelineno-6-8"></a><span class="n">all_errors</span> <span class="o">=</span> <span class="p">{</span><span class="n">budget</span><span class="p">:</span> <span class="p">[]</span> <span class="k">for</span> <span class="n">budget</span> <span class="ow">in</span> <span class="n">budget_array</span><span class="p">}</span>
-</span><span id="__span-6-9"><a href="#__codelineno-6-9" id="__codelineno-6-9" name="__codelineno-6-9"></a>
-</span><span id="__span-6-10"><a href="#__codelineno-6-10" id="__codelineno-6-10" name="__codelineno-6-10"></a><span class="k">with</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">total</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">budget_array</span><span class="p">)</span> <span class="o">*</span> <span class="n">n_runs</span><span class="p">)</span> <span class="k">as</span> <span class="n">pbar</span><span class="p">:</span>
-</span><span id="__span-6-11"><a href="#__codelineno-6-11" id="__codelineno-6-11" name="__codelineno-6-11"></a>    <span class="k">for</span> <span class="n">budget</span> <span class="ow">in</span> <span class="n">budget_array</span><span class="p">:</span>
-</span><span id="__span-6-12"><a href="#__codelineno-6-12" id="__codelineno-6-12" name="__codelineno-6-12"></a>        <span class="n">pbar</span><span class="o">.</span><span class="n">set_description</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Computing values with </span><span class="si">{</span><span class="n">budget</span><span class="si">}</span><span class="s2"> constraints"</span><span class="p">)</span>
-</span><span id="__span-6-13"><a href="#__codelineno-6-13" id="__codelineno-6-13" name="__codelineno-6-13"></a>        <span class="n">dfs</span> <span class="o">=</span> <span class="p">[]</span>
-</span><span id="__span-6-14"><a href="#__codelineno-6-14" id="__codelineno-6-14" name="__codelineno-6-14"></a>        <span class="n">errors</span> <span class="o">=</span> <span class="p">[]</span>
-</span><span id="__span-6-15"><a href="#__codelineno-6-15" id="__codelineno-6-15" name="__codelineno-6-15"></a>        <span class="n">column_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"estimated_</span><span class="si">{</span><span class="n">budget</span><span class="si">}</span><span class="s2">"</span>
-</span><span id="__span-6-16"><a href="#__codelineno-6-16" id="__codelineno-6-16" name="__codelineno-6-16"></a>        <span class="n">valuation</span> <span class="o">=</span> <span class="n">MonteCarloLeastCoreValuation</span><span class="p">(</span>
-</span><span id="__span-6-17"><a href="#__codelineno-6-17" id="__codelineno-6-17" name="__codelineno-6-17"></a>            <span class="n">utility</span><span class="o">=</span><span class="n">utility</span><span class="p">,</span> <span class="n">n_samples</span><span class="o">=</span><span class="n">budget</span><span class="p">,</span> <span class="n">progress</span><span class="o">=</span><span class="kc">False</span>
-</span><span id="__span-6-18"><a href="#__codelineno-6-18" id="__codelineno-6-18" name="__codelineno-6-18"></a>        <span class="p">)</span>
-</span><span id="__span-6-19"><a href="#__codelineno-6-19" id="__codelineno-6-19" name="__codelineno-6-19"></a>        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_runs</span><span class="p">):</span>
-</span><span id="__span-6-20"><a href="#__codelineno-6-20" id="__codelineno-6-20" name="__codelineno-6-20"></a>            <span class="k">with</span> <span class="n">parallel_config</span><span class="p">(</span><span class="n">n_jobs</span><span class="o">=</span><span class="n">n_jobs</span><span class="p">):</span>
-</span><span id="__span-6-21"><a href="#__codelineno-6-21" id="__codelineno-6-21" name="__codelineno-6-21"></a>                <span class="n">valuation</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">train_mini</span><span class="p">)</span>
-</span><span id="__span-6-22"><a href="#__codelineno-6-22" id="__codelineno-6-22" name="__codelineno-6-22"></a>            <span class="n">df</span> <span class="o">=</span> <span class="p">(</span>
-</span><span id="__span-6-23"><a href="#__codelineno-6-23" id="__codelineno-6-23" name="__codelineno-6-23"></a>                <span class="n">valuation</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">to_dataframe</span><span class="p">(</span><span class="n">column</span><span class="o">=</span><span class="n">column_name</span><span class="p">)</span>
-</span><span id="__span-6-24"><a href="#__codelineno-6-24" id="__codelineno-6-24" name="__codelineno-6-24"></a>                <span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">column_name</span><span class="si">}</span><span class="s2">_variances"</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">column_name</span><span class="si">}</span><span class="s2">_counts"</span><span class="p">])</span>
-</span><span id="__span-6-25"><a href="#__codelineno-6-25" id="__codelineno-6-25" name="__codelineno-6-25"></a>                <span class="o">.</span><span class="n">T</span>
-</span><span id="__span-6-26"><a href="#__codelineno-6-26" id="__codelineno-6-26" name="__codelineno-6-26"></a>            <span class="p">)</span>
-</span><span id="__span-6-27"><a href="#__codelineno-6-27" id="__codelineno-6-27" name="__codelineno-6-27"></a>            <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="nb">sorted</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">)]</span>
-</span><span id="__span-6-28"><a href="#__codelineno-6-28" id="__codelineno-6-28" name="__codelineno-6-28"></a>            <span class="n">error</span> <span class="o">=</span> <span class="n">relative_error</span><span class="p">(</span>
-</span><span id="__span-6-29"><a href="#__codelineno-6-29" id="__codelineno-6-29" name="__codelineno-6-29"></a>                <span class="n">exact_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s2">"exact"</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan_to_num</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">ravel</span><span class="p">()),</span> <span class="n">norm</span><span class="o">=</span><span class="mi">1</span>
-</span><span id="__span-6-30"><a href="#__codelineno-6-30" id="__codelineno-6-30" name="__codelineno-6-30"></a>            <span class="p">)</span>
-</span><span id="__span-6-31"><a href="#__codelineno-6-31" id="__codelineno-6-31" name="__codelineno-6-31"></a>            <span class="n">all_errors</span><span class="p">[</span><span class="n">budget</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">error</span><span class="p">)</span>
-</span><span id="__span-6-32"><a href="#__codelineno-6-32" id="__codelineno-6-32" name="__codelineno-6-32"></a>            <span class="n">df</span><span class="p">[</span><span class="s2">"budget"</span><span class="p">]</span> <span class="o">=</span> <span class="n">budget</span>
-</span><span id="__span-6-33"><a href="#__codelineno-6-33" id="__codelineno-6-33" name="__codelineno-6-33"></a>            <span class="n">dfs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
-</span><span id="__span-6-34"><a href="#__codelineno-6-34" id="__codelineno-6-34" name="__codelineno-6-34"></a>            <span class="n">pbar</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-</span><span id="__span-6-35"><a href="#__codelineno-6-35" id="__codelineno-6-35" name="__codelineno-6-35"></a>        <span class="n">estimated_values_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">dfs</span><span class="p">)</span>
-</span><span id="__span-6-36"><a href="#__codelineno-6-36" id="__codelineno-6-36" name="__codelineno-6-36"></a>        <span class="n">all_estimated_values_df</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">estimated_values_df</span><span class="p">)</span>
-</span><span id="__span-6-37"><a href="#__codelineno-6-37" id="__codelineno-6-37" name="__codelineno-6-37"></a>
-</span><span id="__span-6-38"><a href="#__codelineno-6-38" id="__codelineno-6-38" name="__codelineno-6-38"></a><span class="n">values_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">all_estimated_values_df</span><span class="p">)</span>
-</span><span id="__span-6-39"><a href="#__codelineno-6-39" id="__codelineno-6-39" name="__codelineno-6-39"></a><span class="n">errors_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">all_errors</span><span class="p">)</span>
-</span></code></pre>
-  </div>
- </div>
-</div>
-<div class="cell border-box-sizing code_cell rendered celltag_hide-input celltag_invertible-output">
 </div>
 <div class="cell border-box-sizing text_cell rendered">
  <div class="inner_cell">
   <div class="text_cell_render border-box-sizing rendered_html">
    <p>
-    We can see that the approximation error decreases as the number of constraints increases, but that there are diminishing returns for increasing the budget beyond a certain point.
-   </p>
-  </div>
- </div>
-</div>
-<div class="cell border-box-sizing code_cell rendered celltag_hide-input celltag_invertible-output">
-</div>
-<div class="cell border-box-sizing text_cell rendered">
- <div class="inner_cell">
-  <div class="text_cell_render border-box-sizing rendered_html">
-   <h2 id="data-removal">
-    Data Removal
-    <a class="headerlink" href="#data-removal" title="Permanent link">
-     ¶
+    The results object is of type
+    <a class="autorefs autorefs-internal" title="&lt;code class=&quot;doc-symbol doc-symbol-toc doc-symbol-class&quot;&gt;&lt;/code&gt;&amp;nbsp;ValuationResult" href="../../api/pydvl/valuation/result/#pydvl.valuation.result.ValuationResult">
+     ValuationResult
     </a>
-   </h2>
-   <p>
-    In the final two experiments, we rank the training set according to the value estimates obtained with Monte Carlo Least Core. Then, we incrementally remove up to 40% of the most / least valuable training points, train the model on this subset and compute its accuracy on the previously held-out test set.
+    , and contains values, variances and number of updates of the Monte Carlo estimates. It can be indexed, sliced and copied in natural ways.
    </p>
   </div>
  </div>
@@ -4450,115 +4365,20 @@ by solving the following Linear Program:
 <div class="cell border-box-sizing text_cell rendered">
  <div class="inner_cell">
   <div class="text_cell_render border-box-sizing rendered_html">
-   <h3 id="remove-best">
-    Remove Best
-    <a class="headerlink" href="#remove-best" title="Permanent link">
-     ¶
-    </a>
-   </h3>
    <p>
-    We start by removing the best data points and seeing how the model's accuracy evolves. We repeat the whole process (valuation and removal) several times to assess the stability of the results.
+    Let us plot the results. In the next cell we will take the 10 images with the lowest score and plot their values with 95% Normal confidence intervals.
    </p>
-  </div>
- </div>
-</div>
-<div class="cell border-box-sizing code_cell rendered celltag_hide-output">
- <div class="input">
-  <div class="language-python highlight">
-   <pre><span></span><code><span id="__span-7-1"><a href="#__codelineno-7-1" id="__codelineno-7-1" name="__codelineno-7-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">pydvl.valuation.methods.random</span><span class="w"> </span><span class="kn">import</span> <span class="n">RandomValuation</span>
-</span><span id="__span-7-2"><a href="#__codelineno-7-2" id="__codelineno-7-2" name="__codelineno-7-2"></a>
-</span><span id="__span-7-3"><a href="#__codelineno-7-3" id="__codelineno-7-3" name="__codelineno-7-3"></a><span class="n">removal_percentages</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.41</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">)</span>
-</span><span id="__span-7-4"><a href="#__codelineno-7-4" id="__codelineno-7-4" name="__codelineno-7-4"></a><span class="n">methods</span> <span class="o">=</span> <span class="p">[</span>
-</span><span id="__span-7-5"><a href="#__codelineno-7-5" id="__codelineno-7-5" name="__codelineno-7-5"></a>    <span class="n">RandomValuation</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="n">seed</span><span class="p">),</span>
-</span><span id="__span-7-6"><a href="#__codelineno-7-6" id="__codelineno-7-6" name="__codelineno-7-6"></a>    <span class="n">MonteCarloLeastCoreValuation</span><span class="p">(</span>
-</span><span id="__span-7-7"><a href="#__codelineno-7-7" id="__codelineno-7-7" name="__codelineno-7-7"></a>        <span class="n">utility</span><span class="o">=</span><span class="n">utility</span><span class="p">,</span> <span class="n">n_samples</span><span class="o">=</span><span class="n">n_iterations</span><span class="p">,</span> <span class="n">progress</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="n">seed</span>
-</span><span id="__span-7-8"><a href="#__codelineno-7-8" id="__codelineno-7-8" name="__codelineno-7-8"></a>    <span class="p">),</span>
-</span><span id="__span-7-9"><a href="#__codelineno-7-9" id="__codelineno-7-9" name="__codelineno-7-9"></a><span class="p">]</span>
-</span><span id="__span-7-10"><a href="#__codelineno-7-10" id="__codelineno-7-10" name="__codelineno-7-10"></a><span class="n">all_scores</span> <span class="o">=</span> <span class="p">[]</span>
-</span><span id="__span-7-11"><a href="#__codelineno-7-11" id="__codelineno-7-11" name="__codelineno-7-11"></a><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">trange</span><span class="p">(</span><span class="n">n_runs</span><span class="p">,</span> <span class="n">position</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="sa">f</span><span class="s2">"Removing best points, </span><span class="si">{</span><span class="n">n_runs</span><span class="si">}</span><span class="s2"> times"</span><span class="p">):</span>
-</span><span id="__span-7-12"><a href="#__codelineno-7-12" id="__codelineno-7-12" name="__codelineno-7-12"></a>    <span class="k">for</span> <span class="n">method</span> <span class="ow">in</span> <span class="n">methods</span><span class="p">:</span>
-</span><span id="__span-7-13"><a href="#__codelineno-7-13" id="__codelineno-7-13" name="__codelineno-7-13"></a>        <span class="k">with</span> <span class="n">parallel_config</span><span class="p">(</span><span class="n">n_jobs</span><span class="o">=</span><span class="n">n_jobs</span><span class="p">):</span>
-</span><span id="__span-7-14"><a href="#__codelineno-7-14" id="__codelineno-7-14" name="__codelineno-7-14"></a>            <span class="n">valuation</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">train</span><span class="p">)</span>
-</span><span id="__span-7-15"><a href="#__codelineno-7-15" id="__codelineno-7-15" name="__codelineno-7-15"></a>        <span class="n">result</span> <span class="o">=</span> <span class="n">valuation</span><span class="o">.</span><span class="n">result</span>
-</span><span id="__span-7-16"><a href="#__codelineno-7-16" id="__codelineno-7-16" name="__codelineno-7-16"></a>
-</span><span id="__span-7-17"><a href="#__codelineno-7-17" id="__codelineno-7-17" name="__codelineno-7-17"></a>        <span class="n">scores</span> <span class="o">=</span> <span class="n">compute_removal_score</span><span class="p">(</span>
-</span><span id="__span-7-18"><a href="#__codelineno-7-18" id="__codelineno-7-18" name="__codelineno-7-18"></a>            <span class="n">utility</span><span class="p">,</span>
-</span><span id="__span-7-19"><a href="#__codelineno-7-19" id="__codelineno-7-19" name="__codelineno-7-19"></a>            <span class="n">result</span><span class="p">,</span>
-</span><span id="__span-7-20"><a href="#__codelineno-7-20" id="__codelineno-7-20" name="__codelineno-7-20"></a>            <span class="n">train</span><span class="p">,</span>
-</span><span id="__span-7-21"><a href="#__codelineno-7-21" id="__codelineno-7-21" name="__codelineno-7-21"></a>            <span class="n">removal_percentages</span><span class="p">,</span>
-</span><span id="__span-7-22"><a href="#__codelineno-7-22" id="__codelineno-7-22" name="__codelineno-7-22"></a>            <span class="n">remove_best</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-</span><span id="__span-7-23"><a href="#__codelineno-7-23" id="__codelineno-7-23" name="__codelineno-7-23"></a>            <span class="n">progress</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-</span><span id="__span-7-24"><a href="#__codelineno-7-24" id="__codelineno-7-24" name="__codelineno-7-24"></a>        <span class="p">)</span>
-</span><span id="__span-7-25"><a href="#__codelineno-7-25" id="__codelineno-7-25" name="__codelineno-7-25"></a>
-</span><span id="__span-7-26"><a href="#__codelineno-7-26" id="__codelineno-7-26" name="__codelineno-7-26"></a>        <span class="n">scores</span><span class="p">[</span><span class="s2">"method_name"</span><span class="p">]</span> <span class="o">=</span> <span class="n">method</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span>
-</span><span id="__span-7-27"><a href="#__codelineno-7-27" id="__codelineno-7-27" name="__codelineno-7-27"></a>        <span class="n">all_scores</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">scores</span><span class="p">)</span>
-</span><span id="__span-7-28"><a href="#__codelineno-7-28" id="__codelineno-7-28" name="__codelineno-7-28"></a>
-</span><span id="__span-7-29"><a href="#__codelineno-7-29" id="__codelineno-7-29" name="__codelineno-7-29"></a><span class="n">scores_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">all_scores</span><span class="p">)</span>
-</span></code></pre>
   </div>
  </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered celltag_hide-input celltag_invertible-output">
-</div>
-<div class="cell border-box-sizing text_cell rendered">
- <div class="inner_cell">
-  <div class="text_cell_render border-box-sizing rendered_html">
-   <p>
-    We can clearly see that removing the most valuable data points, as given by the Least Core method, leads to, on average, a decrease in the model's performance and that the method outperforms random removal of data points.
-   </p>
-  </div>
- </div>
-</div>
-<div class="cell border-box-sizing text_cell rendered">
- <div class="inner_cell">
-  <div class="text_cell_render border-box-sizing rendered_html">
-   <h3 id="remove-worst">
-    Remove Worst
-    <a class="headerlink" href="#remove-worst" title="Permanent link">
-     ¶
-    </a>
-   </h3>
-   <p>
-    We then proceed to removing the worst data points and seeing how the model's accuracy evolves.
-   </p>
-  </div>
- </div>
-</div>
-<div class="cell border-box-sizing code_cell rendered celltag_hide-output">
- <div class="input">
-  <div class="language-python highlight">
-   <pre><span></span><code><span id="__span-8-1"><a href="#__codelineno-8-1" id="__codelineno-8-1" name="__codelineno-8-1"></a><span class="n">all_scores</span> <span class="o">=</span> <span class="p">[]</span>
-</span><span id="__span-8-2"><a href="#__codelineno-8-2" id="__codelineno-8-2" name="__codelineno-8-2"></a><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">trange</span><span class="p">(</span><span class="n">n_runs</span><span class="p">,</span> <span class="n">position</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="sa">f</span><span class="s2">"Removing best points, </span><span class="si">{</span><span class="n">n_runs</span><span class="si">}</span><span class="s2"> times"</span><span class="p">):</span>
-</span><span id="__span-8-3"><a href="#__codelineno-8-3" id="__codelineno-8-3" name="__codelineno-8-3"></a>    <span class="k">for</span> <span class="n">method</span> <span class="ow">in</span> <span class="n">methods</span><span class="p">:</span>
-</span><span id="__span-8-4"><a href="#__codelineno-8-4" id="__codelineno-8-4" name="__codelineno-8-4"></a>        <span class="k">with</span> <span class="n">parallel_config</span><span class="p">(</span><span class="n">n_jobs</span><span class="o">=</span><span class="n">n_jobs</span><span class="p">):</span>
-</span><span id="__span-8-5"><a href="#__codelineno-8-5" id="__codelineno-8-5" name="__codelineno-8-5"></a>            <span class="n">valuation</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">train</span><span class="p">)</span>
-</span><span id="__span-8-6"><a href="#__codelineno-8-6" id="__codelineno-8-6" name="__codelineno-8-6"></a>        <span class="n">result</span> <span class="o">=</span> <span class="n">valuation</span><span class="o">.</span><span class="n">result</span>
-</span><span id="__span-8-7"><a href="#__codelineno-8-7" id="__codelineno-8-7" name="__codelineno-8-7"></a>
-</span><span id="__span-8-8"><a href="#__codelineno-8-8" id="__codelineno-8-8" name="__codelineno-8-8"></a>        <span class="n">scores</span> <span class="o">=</span> <span class="n">compute_removal_score</span><span class="p">(</span>
-</span><span id="__span-8-9"><a href="#__codelineno-8-9" id="__codelineno-8-9" name="__codelineno-8-9"></a>            <span class="n">utility</span><span class="p">,</span>
-</span><span id="__span-8-10"><a href="#__codelineno-8-10" id="__codelineno-8-10" name="__codelineno-8-10"></a>            <span class="n">result</span><span class="p">,</span>
-</span><span id="__span-8-11"><a href="#__codelineno-8-11" id="__codelineno-8-11" name="__codelineno-8-11"></a>            <span class="n">train</span><span class="p">,</span>
-</span><span id="__span-8-12"><a href="#__codelineno-8-12" id="__codelineno-8-12" name="__codelineno-8-12"></a>            <span class="n">removal_percentages</span><span class="p">,</span>
-</span><span id="__span-8-13"><a href="#__codelineno-8-13" id="__codelineno-8-13" name="__codelineno-8-13"></a>            <span class="n">remove_best</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-</span><span id="__span-8-14"><a href="#__codelineno-8-14" id="__codelineno-8-14" name="__codelineno-8-14"></a>            <span class="n">progress</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-</span><span id="__span-8-15"><a href="#__codelineno-8-15" id="__codelineno-8-15" name="__codelineno-8-15"></a>        <span class="p">)</span>
-</span><span id="__span-8-16"><a href="#__codelineno-8-16" id="__codelineno-8-16" name="__codelineno-8-16"></a>
-</span><span id="__span-8-17"><a href="#__codelineno-8-17" id="__codelineno-8-17" name="__codelineno-8-17"></a>        <span class="n">scores</span><span class="p">[</span><span class="s2">"method_name"</span><span class="p">]</span> <span class="o">=</span> <span class="n">method</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span>
-</span><span id="__span-8-18"><a href="#__codelineno-8-18" id="__codelineno-8-18" name="__codelineno-8-18"></a>        <span class="n">all_scores</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">scores</span><span class="p">)</span>
-</span><span id="__span-8-19"><a href="#__codelineno-8-19" id="__codelineno-8-19" name="__codelineno-8-19"></a>
-</span><span id="__span-8-20"><a href="#__codelineno-8-20" id="__codelineno-8-20" name="__codelineno-8-20"></a><span class="n">scores_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">all_scores</span><span class="p">)</span>
-</span></code></pre>
-  </div>
- </div>
-</div>
-<div class="cell border-box-sizing code_cell rendered celltag_hide-input celltag_invertible-output">
-</div>
-<div class="cell border-box-sizing text_cell rendered">
- <div class="inner_cell">
-  <div class="text_cell_render border-box-sizing rendered_html">
-   <p>
-    We can clearly see that removing the least valuable data points, as given by the Least Core method, leads to, on average, an increase in the model's performance and that the method outperforms the random removal of data points.
-   </p>
+ <div class="output_wrapper">
+  <div class="output">
+   <div class="output_area">
+    <div class="output_png output_subarea">
+     <img alt="No description has been provided for this image" src="data:image/png;base64,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"/>
+    </div>
+   </div>
   </div>
  </div>
 </div>
@@ -4585,7 +4405,7 @@ by solving the following Linear Program:
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="April 7, 2025 14:13:18 UTC">2025-04-07</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="September 7, 2025 15:41:34 UTC">2025-09-07</span>
   </span>
 
     
@@ -4595,7 +4415,7 @@ by solving the following Linear Program:
     <span class="md-icon" title="Created">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="December 31, 2022 23:13:07 UTC">2022-12-31</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="May 4, 2025 15:12:52 UTC">2025-05-04</span>
   </span>
 
     
@@ -4632,7 +4452,7 @@ by solving the following Linear Program:
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../msr_banzhaf_digits/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Banzhaf semivalues">
+          <a href="../shapley_basic_spotify/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Shapley values">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -4642,20 +4462,20 @@ by solving the following Linear Program:
                 Previous
               </span>
               <div class="md-ellipsis">
-                Banzhaf semivalues
+                Shapley values
               </div>
             </div>
           </a>
         
         
           
-          <a href="../data_oob/" class="md-footer__link md-footer__link--next" aria-label="Next: Data OOB">
+          <a href="../shapley_knn_flowers/" class="md-footer__link md-footer__link--next" aria-label="Next: KNN Shapley">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                Data OOB
+                KNN Shapley
               </div>
             </div>
             <div class="md-footer__button md-icon">
