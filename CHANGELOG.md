@@ -14,6 +14,8 @@
   [PR #673](https://github.com/aai-institute/pyDVL/pull/673)
 - Improved documentation and examples using DeepSets for Data Utility Learning 
   [PR #674](https://github.com/aai-institute/pyDVL/pull/674)
+- Documented the use of torch models via skorch in a dedicated notebook
+  [PR #678](https://github.com/aai-institute/pyDVL/pull/678)
 
 ### Fixed
 
