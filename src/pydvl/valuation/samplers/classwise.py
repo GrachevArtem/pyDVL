@@ -18,6 +18,7 @@ This sampling scheme is divided into an outer and an inner sampler.
   returns so-called "in-class" samples (denoted by $S_{y_i}$ in this documentation) from
   the set $N_{y_i}$, i.e., the set of all indices with the same label as the data point
   of interest.
+
     !!! info "Restricting the number of inner samples"
         Because of the nested sampling procedure, it is necessary to limit the amount
         of in-class samples to a finite number. This is done by setting the

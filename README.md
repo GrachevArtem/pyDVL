@@ -183,7 +183,7 @@ or out-of-distribution, and dropping them can improve the model's performance.
 from joblib import parallel_config
 from sklearn.datasets import load_iris
 from sklearn.svm import SVC
-from pydvl.valuation import Dataset, ShapleyValuation, UniformSampler,\ 
+from pydvl.valuation import Dataset, ShapleyValuation, UniformSampler,\
     MinUpdates, ModelUtility, SupervisedScorer
 
 seed = 42

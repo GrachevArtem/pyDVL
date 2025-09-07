@@ -5,7 +5,7 @@
 ### Added
 
 - Support for `torch.Tensor` as underlying data type in `Dataset` and
-  `GroupedDataset`
+  `GroupedDataset`. Support for memmapped `np.ndarray`.
   [PR #673](https://github.com/aai-institute/pyDVL/pull/673)
 - Support for pytorch models in most valuation methods when wrapped in
   classes implementing the protocol `TorchSupervisedModel`, e.g. by using
@@ -19,6 +19,7 @@
 
 - Issues with `Dataset` indexing
   [PR #673](https://github.com/aai-institute/pyDVL/pull/673)
+- Documentation rendering issues
 
 ### Changed
 
