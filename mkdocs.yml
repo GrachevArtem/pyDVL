@@ -38,6 +38,7 @@ nav:
     - examples/index.md
     - Data Valuation:
         - Shapley values: examples/shapley_basic_spotify.ipynb
+        - Using pytorch models: examples/shapley_skorch.ipynb
         - KNN Shapley: examples/shapley_knn_flowers.ipynb
         - Data utility learning: examples/shapley_utility_learning.ipynb
         - Banzhaf semivalues: examples/msr_banzhaf_digits.ipynb
