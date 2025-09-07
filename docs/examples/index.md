@@ -18,6 +18,15 @@ alias:
 
     [![](img/shapley_basic_spotify.png)](shapley_basic_spotify/)
 
+-   [__Using pytorch models__](shapley_skorch/)
+
+    ---
+    
+    A simple example using a pytorch model wrapped with skorch, showcasing how
+    to use any torch model for data valuation.
+
+    [![](img/mnist_low_high.png)](shapley_skorch/)
+
 -   [__KNN Shapley__](shapley_knn_flowers/)
 
     ---
