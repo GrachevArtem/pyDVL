@@ -1,3 +1,18 @@
+
+cd pyDVL 
+// activate your env
+// remove current installation of pyDVL if you have one
+pip install . --editable 
+
+// this will install pyDVL into your env. `Editable` means that all changes you introduce here will be available in your env. 
+
+
+
+
+
+
+
+
 # Quick Start: Using Partial Fit with TMC Shapley
 
 ## TL;DR
