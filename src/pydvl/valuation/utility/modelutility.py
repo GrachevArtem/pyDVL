@@ -113,11 +113,14 @@ import logging
 import warnings
 from typing import Generic, TypeVar, cast
 
+from typing_extensions import Self
+
 import numpy as np
 from sklearn.base import clone
 
 from pydvl.utils.caching import CacheBackend, CachedFuncConfig, CacheStats
 from pydvl.utils.functional import suppress_warnings
+from pydvl.valuation.dataset import Dataset
 from pydvl.valuation.scorers import Scorer
 from pydvl.valuation.types import BaseModel, SampleT
 
@@ -424,6 +427,14 @@ class PartialFitModelUtility(ModelUtility[SampleT, ModelT]):
         self._current_model: ModelT | None = None
         self._current_indices: set[int] = set()
         self._supports_partial_fit = hasattr(model, "partial_fit")
+        # Cache for unique classes, computed once per dataset
+        self._classes: np.ndarray | None = None
+
+    def with_dataset(self, data: Dataset, copy: bool = True) -> Self:
+        utility = super().with_dataset(data, copy)
+        # Invalidate classes cache when dataset changes
+        utility._classes = None
+        return utility
 
     def reset_partial_fit_state(self):
         """Reset the partial_fit state for a new permutation.
@@ -433,39 +444,6 @@ class PartialFitModelUtility(ModelUtility[SampleT, ModelT]):
         """
         self._current_model = None
         self._current_indices = set()
-
-    def _can_use_partial_fit(self, sample: SampleT) -> bool:
-        """Check if we can use partial_fit for this sample.
-
-        Returns True if:
-        1. Model supports partial_fit
-        2. We have a current model trained
-        3. The new sample is a superset of the current indices (adding data points)
-        """
-        if not self._supports_partial_fit or self._current_model is None:
-            return False
-
-        new_indices = set(sample.subset)
-        # Check if new sample is a superset (we're only adding points, not removing)
-        return self._current_indices.issubset(new_indices)
-
-    def _get_new_data_points(self, sample: SampleT) -> tuple:
-        """Get only the new data points to add via partial_fit.
-
-        Args:
-            sample: The new sample containing all indices including previously trained ones.
-
-        Returns:
-            Tuple of (X_new, y_new) containing only the newly added data points.
-        """
-        if self.training_data is None:
-            raise ValueError("No training data provided")
-
-        new_indices = set(sample.subset) - self._current_indices
-        new_indices_array = np.array(sorted(new_indices))
-
-        x_new, y_new = self.training_data.data(new_indices_array)
-        return x_new, y_new
 
     @suppress_warnings(flag="show_warnings")
     def _utility(self, sample: SampleT) -> float:
@@ -485,30 +463,48 @@ class PartialFitModelUtility(ModelUtility[SampleT, ModelT]):
 
         try:
             # Check if we can use partial_fit
-            can_use_partial = self._can_use_partial_fit(sample)
+            # Optimization: logic integrated to avoid double set creation
+            use_partial = False
+            x_new = None
+            y_new = None
+            new_indices = set()
 
-            if can_use_partial:
+            if self._supports_partial_fit and self._current_model is not None:
+                # Fast check on lengths first to avoid set creation if obviously not adding points
+                # Note: We assume only adding points (superset)
+                if len(sample.subset) >= len(self._current_indices):
+                    sample_set = set(sample.subset)
+                    if self._current_indices.issubset(sample_set):
+                        use_partial = True
+                        new_indices = sample_set - self._current_indices
+                        if len(new_indices) > 0:
+                            if self.training_data is None:
+                                raise ValueError("No training data provided")
+                            new_indices_array = np.array(sorted(new_indices))
+                            x_new, y_new = self.training_data.data(new_indices_array)
+
+            if use_partial:
                 # Incremental training with partial_fit
-                x_new, y_new = self._get_new_data_points(sample)
 
                 # Only proceed with partial_fit if there are new points
-                if len(x_new) > 0:
+                if x_new is not None and len(x_new) > 0:
                     # For classifiers, partial_fit may need classes parameter on first call
                     if hasattr(self._current_model, "classes_") or not hasattr(
                         self._current_model, "partial_fit"
                     ):
-                        # Model already has classes or doesn't need them
+                        # Model already has classes or doesn't need them (e.g. regressor or already fitted)
                         self._current_model.partial_fit(x_new, y_new)
                     else:
                         # First partial_fit call for a classifier - need to provide classes
-                        # Get all unique classes from the full training data
-                        if self.training_data is None:
-                            raise ValueError("No training data provided")
-                        _, y_all = self.training_data.data()
-                        classes = np.unique(y_all)
-                        self._current_model.partial_fit(x_new, y_new, classes=classes)
+                        if self._classes is None:
+                            if self.training_data is None:
+                                raise ValueError("No training data provided")
+                            _, y_all = self.training_data.data()
+                            self._classes = np.unique(y_all)
 
-                    self._current_indices.update(sample.subset)
+                        self._current_model.partial_fit(x_new, y_new, classes=self._classes)
+
+                    self._current_indices.update(new_indices)
 
                 score = self._compute_score(self._current_model)
                 return score
