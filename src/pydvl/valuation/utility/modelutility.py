@@ -219,6 +219,7 @@ class ModelUtility(UtilityBase[SampleT], Generic[SampleT, ModelT]):
             cached_func_options.hash_prefix = str(hash((model, scorer)))
         self.cached_func_options = cached_func_options
         self._initialize_utility_wrapper()
+        self.full_fit_count = 0
 
     def _initialize_utility_wrapper(self):
         if self.cache is not None:
@@ -294,6 +295,9 @@ class ModelUtility(UtilityBase[SampleT], Generic[SampleT, ModelT]):
                 model or the scorer returns [numpy.nan][]. Otherwise, the score
                 of the model.
         """
+        print("Utility")
+        self.full_fit_count += 1
+        print(f"Full fit count: {self.full_fit_count}")
         x_train, y_train = self.sample_to_data(sample)
 
         try:
@@ -429,6 +433,8 @@ class PartialFitModelUtility(ModelUtility[SampleT, ModelT]):
         self._supports_partial_fit = hasattr(model, "partial_fit")
         # Cache for unique classes, computed once per dataset
         self._classes: np.ndarray | None = None
+        self.full_fit_count = 0
+        self.partial_fit_count = 0
 
     def with_dataset(self, data: Dataset, copy: bool = True) -> Self:
         utility = super().with_dataset(data, copy)
@@ -461,6 +467,9 @@ class PartialFitModelUtility(ModelUtility[SampleT, ModelT]):
         if sample is None or len(sample.subset) == 0:
             return self.scorer.default
 
+        print("Partial fit utility")
+        print(f"Partial fit count: {self.partial_fit_count}")
+        print(f"Full fit count: {self.full_fit_count}")
         try:
             # Check if we can use partial_fit
             # Optimization: logic integrated to avoid double set creation
@@ -485,7 +494,8 @@ class PartialFitModelUtility(ModelUtility[SampleT, ModelT]):
 
             if use_partial:
                 # Incremental training with partial_fit
-
+                print("Partial fit")
+                self.partial_fit_count += 1
                 # Only proceed with partial_fit if there are new points
                 if x_new is not None and len(x_new) > 0:
                     # For classifiers, partial_fit may need classes parameter on first call
@@ -509,6 +519,8 @@ class PartialFitModelUtility(ModelUtility[SampleT, ModelT]):
                 score = self._compute_score(self._current_model)
                 return score
             else:
+                print("Full fit")
+                self.full_fit_count += 1
                 # Full training from scratch
                 x_train, y_train = self.sample_to_data(sample)
                 model = self._maybe_clone_model(self.model, self.clone_before_fit)
