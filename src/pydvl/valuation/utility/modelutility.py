@@ -220,6 +220,8 @@ class ModelUtility(UtilityBase[SampleT], Generic[SampleT, ModelT]):
         self.cached_func_options = cached_func_options
         self._initialize_utility_wrapper()
 
+        self._n_full = 0
+
     def _initialize_utility_wrapper(self):
         if self.cache is not None:
             self._utility_wrapper = self.cache.wrap(
@@ -297,6 +299,7 @@ class ModelUtility(UtilityBase[SampleT], Generic[SampleT, ModelT]):
         x_train, y_train = self.sample_to_data(sample)
 
         try:
+            self._n_full += 1
             model = self._maybe_clone_model(self.model, self.clone_before_fit)
             model.fit(x_train, y_train)
             score = self._compute_score(model)
@@ -429,6 +432,17 @@ class PartialFitModelUtility(ModelUtility[SampleT, ModelT]):
         self._supports_partial_fit = hasattr(model, "partial_fit")
         # Cache for unique classes, computed once per dataset
         self._classes: np.ndarray | None = None
+        self._n_full = 0
+        self._n_partial = 0
+        
+    def __call__(self, sample: SampleT | None) -> float:
+        # Treat None/empty as "start of new permutation"
+        if sample is None or len(sample.subset) == 0:
+            print("Reset on empty input set")
+            self.reset_partial_fit_state()
+            return self.scorer.default
+
+        return cast(float, self._utility_wrapper(sample))
 
     def with_dataset(self, data: Dataset, copy: bool = True) -> Self:
         utility = super().with_dataset(data, copy)
@@ -485,7 +499,7 @@ class PartialFitModelUtility(ModelUtility[SampleT, ModelT]):
 
             if use_partial:
                 # Incremental training with partial_fit
-
+                self._n_partial += 1
                 # Only proceed with partial_fit if there are new points
                 if x_new is not None and len(x_new) > 0:
                     # For classifiers, partial_fit may need classes parameter on first call
@@ -510,6 +524,8 @@ class PartialFitModelUtility(ModelUtility[SampleT, ModelT]):
                 return score
             else:
                 # Full training from scratch
+                self._n_full += 1
+                
                 x_train, y_train = self.sample_to_data(sample)
                 model = self._maybe_clone_model(self.model, self.clone_before_fit)
                 model.fit(x_train, y_train)
